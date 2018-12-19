@@ -27,7 +27,7 @@ class Test(unittest.TestCase):
 
     def test_records(self):
         for r in sentinel.records():
-            assert(str(r['datetime'].date()) == '2015-01-02')
+            assert(r['datetime'] == 'datetime')
             break
 
     def test_transform(self):
