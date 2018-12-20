@@ -150,10 +150,10 @@
         "thumbnail": {
             "title": "Thumbnail"
         },
-        "metadata": {
+        "info": {
             "title": "Basic JSON metadata"
         },
-        "metadata-xml": {
+        "metadata": {
             "title": "Complete XML metadata"
         },
         "tki": {

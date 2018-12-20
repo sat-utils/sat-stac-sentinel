@@ -27,7 +27,8 @@ class Test(unittest.TestCase):
 
     def test_records(self):
         for r in sentinel.records():
-            assert(r['datetime'] == 'datetime')
+            assert('datetime' in r)
+            assert('url' in r)
             break
 
     def test_transform(self):
@@ -36,6 +37,7 @@ class Test(unittest.TestCase):
         assert(str(item.date) == '2017-10-23')
         assert(item.data['type'] == 'Feature')
         assert(len(item.data['assets']) == 17)
+        assert(item['sentinel:sequence'] == "0")
 
     def test_get_metadata(self):
         """ Read Sentinel metadata """

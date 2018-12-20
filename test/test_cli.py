@@ -15,3 +15,7 @@ class Test(unittest.TestCase):
             parse_args([''])
         with self.assertRaises(SystemExit):
             parse_args(['-h'])
+
+    def test_parse_args(self):
+        args = parse_args('ingest catalog.json'.split(' '))
+        assert(args['catalog'] == 'catalog.json')

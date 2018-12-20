@@ -33,7 +33,6 @@ def parse_args(args):
     parser = subparsers.add_parser('ingest', parents=[pparser], help='Ingest records into catalog', formatter_class=dhf)
     parser.add_argument('catalog', help='Catalog that contains the Collection')
     valid_date = lambda d: datetime.strptime(d, '%Y-%m-%d').date()
-    parser.add_argument('-c', '--collections', help='Collection to ingest (pre, c1, or all)', default='all')
     parser.add_argument('--start', help='Start date of ingestion', default=None, type=valid_date)
     parser.add_argument('--end', help='End date of ingestion', default=None, type=valid_date)
 
@@ -54,9 +53,7 @@ def cli():
 
     if cmd == 'ingest':
         cat = Catalog.open(args['catalog'])
-        sentinel.add_items(cat, collections=args['collections'], start_date=args['start'], end_date=args['end'])
-    elif cmd == 'cmd2':
-        print(cmd)
+        sentinel.add_items(cat, start_date=args['start'], end_date=args['end'])
 
 
 if __name__ == "__main__":

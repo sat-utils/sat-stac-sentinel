@@ -7,7 +7,7 @@ import sys
 
 from datetime import datetime
 from satstac import STACError, Collection
-from satstac.sentinel import transform
+from satstac.sentinel import transform, SETTINGS
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -35,9 +35,9 @@ def lambda_handler(event, context):
             'url': url
         }
         # transform to STAC
-        #item = transform(data)
-        #logger.debug('Item: %s' % json.dumps(item.data))
-        #collection.add_item(item, path='${eo:column}/${eo:row}/${date}')
+        item = transform(data)
+        logger.debug('Item: %s' % json.dumps(item.data))
+        #collection.add_item(item, path=SETTINGS['path_pattern'])
         #logger.info('Added %s as %s' % (item, item.filename))
         #client.publish(TopicArn=sns_arn, Message=json.dumps(item.data))
         #logger.info('Published to %s' % sns_arn)
