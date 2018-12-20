@@ -1,1 +1,3 @@
 sat-stac~=0.1.0rc4
+pyproj==1.9.5.1
+boto3==1.9.37
