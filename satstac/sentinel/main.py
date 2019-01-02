@@ -43,20 +43,17 @@ def add_items(catalog, start_date=None, end_date=None):
     for i, record in enumerate(records()):
         now = datetime.now()
         dt = record['datetime'].date()
-        if (i % 10000) == 0:
-            logger.info('%s: %s records scanned' % (datetime.now(), i))
-        if start_date is not None and dt < start_date:
+        if i % 10000 == 0:
+            print('Scanned %i records' % i+1)
+        if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
             # skip to next if before start_date
-            continue
-        if end_date is not None and dt > end_date:
-            # stop if after end_date
             continue
         try:
             url = record['url'].replace('sentinel-s2-l1c.s3.amazonaws.com', 'roda.sentinel-hub.com/sentinel-s2-l1c')
             metadata = get_metadata(record['url'])
             item = transform(metadata)
         except Exception as err:
-            logger.error('Error getting %s: %s' % (record['url'], err))
+            logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
             continue
         try:
             collection.add_item(item, path=SETTINGS['path_pattern'], filename='item')
@@ -137,7 +134,7 @@ def transform(data):
         'collection': 'sentinel-2-l1c',
         'datetime': dt.isoformat(),
         'eo:platform': 'sentinel-2%s' % data['productName'][2].lower(),
-        'eo:cloud_cover': int(float(data['cloudyPixelPercentage'])),
+        'eo:cloud_cover': float(data['cloudyPixelPercentage']),
         'sentinel:utm_zone': data['utmZone'],
         'sentinel:latitude_band': data['latitudeBand'],
         'sentinel:grid_square': data['gridSquare'],
