@@ -28,10 +28,10 @@ def lambda_handler(event, context):
     for m in msg['Records']:
         logger.info('Message: %s' % json.dumps(m))
         url = 'https://%s.s3.amazonaws.com/%s' % (m['s3']['bucket']['name'], m['s3']['object']['key'])
-        id = os.path.splitext(os.path.basename(os.path.dirname(url)))[0]
+        #id = os.path.splitext(os.path.basename(os.path.dirname(url)))[0]
         data = {
-            'id': id,
-            'datetime': datetime.strptime(id.split('_')[3], '%Y%m%d'),
+            #'id': id,
+            #'datetime': datetime.strptime(id.split('_')[3], '%Y%m%d'),
             'url': url
         }
         # transform to STAC
