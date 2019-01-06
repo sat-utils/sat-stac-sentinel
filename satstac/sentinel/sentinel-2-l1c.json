@@ -159,72 +159,72 @@
         "tki": {
             "title": "True color image",
             "type": "image/jp2",
-            "eo:bands": ["B04", "B03", "B02"]
+            "eo:bands": [3, 2, 1]
         },
         "B01": {
             "title": "Band 1 (coastal)",
             "type": "image/jp2",
-            "eo:bands": ["B01"]
+            "eo:bands": [0]
         },
         "B02": {
             "title": "Band 2 (blue)",
             "type": "image/jp2",
-            "eo:bands": ["B02"]
+            "eo:bands": [2]
         },
         "B03": {
             "title": "Band 3 (green)",
             "type": "image/jp2",
-            "eo:bands": ["B03"]
+            "eo:bands": [2]
         },
         "B04": {
             "title": "Band 4 (red)",
             "type": "image/jp2",
-            "eo:bands": ["B04"]
+            "eo:bands": [3]
         },
         "B05": {
             "title": "Band 5",
             "type": "image/jp2",
-            "eo:bands": ["B05"]
+            "eo:bands": [4]
         },
         "B06": {
             "title": "Band 6",
             "type": "image/jp2",
-            "eo:bands": ["B06"]
+            "eo:bands": [5]
         },
         "B07": {
             "title": "Band 7",
             "type": "image/jp2",
-            "eo:bands": ["B07"]
+            "eo:bands": [6]
         },
         "B08": {
             "title": "Band 8 (nir)",
             "type": "image/jp2",
-            "eo:bands": ["B08"]
+            "eo:bands": [7]
         },
         "B8A": {
             "title": "Band 8A",
             "type": "image/jp2",
-            "eo:bands": ["B8A"]
+            "eo:bands": [8]
         },
         "B09": {
             "title": "Band 9",
             "type": "image/jp2",
-            "eo:bands": ["B09"]
+            "eo:bands": [9]
         },
         "B10": {
             "title": "Band 10 (cirrus)",
             "type": "image/jp2",
-            "eo:bands": ["B10"]
+            "eo:bands": [10]
         },
         "B11": {
             "title": "Band 11 (swir16)",
             "type": "image/jp2",
-            "eo:bands": ["B11"]
+            "eo:bands": [11]
         },
         "B12": {
             "title": "Band 12 (swir22)",
             "type": "image/jp2",
-            "eo:bands": ["B12"]
+            "eo:bands": [12]
         }
     },
     "links": [
