@@ -46,5 +46,5 @@ jobs:
               sudo pip install awscli
               pip install . -t lambda/
               cd lambda/; zip -ru ../lambda-deploy.zip ./; cd ..
-              aws lambda --region us-europe-1 update-function-code --function-name sat-stac-sentinel --zip-file fileb://lambda-deploy.zip
+              aws lambda --region eu-central-1-1 update-function-code --function-name sat-stac-sentinel --zip-file fileb://lambda-deploy.zip
             fi
