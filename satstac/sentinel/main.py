@@ -7,6 +7,9 @@ import sys
 
 import os.path as op
 
+from shapely.geometry import MultiPoint, Point
+from shapely import geometry
+
 from datetime import datetime, timedelta
 from dateutil.parser import parse
 from pyproj import Proj, transform as reproj
@@ -88,9 +91,6 @@ def records():
 
 def transform(data):
     """ Transform Sentinel metadata (from tileInfo.json) into a STAC item """
-    utm_zone = data['utmZone']
-    lat_band = data['latitudeBand']
-    grid_square = data['gridSquare']
     dt = parse(data['timestamp'])
     epsg = data['tileOrigin']['crs']['properties']['name'].split(':')[-1]
 
@@ -106,6 +106,8 @@ def transform(data):
     lons, lats = reproj(p1, p2, xs, ys)
     bbox = [min(lons), min(lats), max(lons), max(lats)]
     coordinates = [[[lons[i], lats[i]] for i in range(0, len(lons))]]
+
+    geom = geometry.mapping(geometry.Polygon(coordinates[0]).convex_hull)
 
     assets = _collection.data['assets']
     assets = utils.dict_merge(assets, {
@@ -148,10 +150,7 @@ def transform(data):
         'type': 'Feature',
         'id': id,
         'bbox': bbox,
-        'geometry': {
-            'type': 'Polygon',
-            'coordinates': coordinates
-        },
+        'geometry': geom,
         'properties':props,
         'assets': assets
     }
@@ -164,6 +163,7 @@ def get_metadata(url):
     r = requests.get(url, stream=True)
     metadata = json.loads(r.text)
     return metadata
+
 
 def read_remote(url):
     """ Return a line iterator for a remote file """
