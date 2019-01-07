@@ -112,8 +112,8 @@ def transform(data):
     assets = _collection.data['assets']
     assets = utils.dict_merge(assets, {
         'thumbnail': {'href': op.join(roda_url, 'preview.jpg')},
-        'metadata': {'href': op.join(roda_url, 'tileInfo.json')},
-        'metadata-xml': {'href': op.join(roda_url, 'metadata.xml')},
+        'info': {'href': op.join(roda_url, 'tileInfo.json')},
+        'metadata': {'href': op.join(roda_url, 'metadata.xml')},
         'tki': {'href': op.join(url, 'TKI.jp2')},
         'B01': {'href': op.join(url, 'B01.TIF')},
         'B02': {'href': op.join(url, 'B02.TIF')},
