@@ -36,7 +36,7 @@ class Test(unittest.TestCase):
         item = sentinel.transform(md)
         assert(str(item.date) == '2017-10-23')
         assert(item.data['type'] == 'Feature')
-        assert(len(item.data['assets']) == 17)
+        assert(len(item.data['assets']) == 18)
         assert(item['sentinel:sequence'] == "0")
 
     def test_get_metadata(self):
