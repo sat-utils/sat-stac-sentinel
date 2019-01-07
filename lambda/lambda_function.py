@@ -12,7 +12,7 @@ from satstac.sentinel import transform, SETTINGS, get_metadata
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-client = boto3.client('sns', region_name='us-europe-1')
+client = boto3.client('sns', region_name='eu-central-1')
 
 # new Sentinel scene SNS ARN
 # arn:aws:sns:eu-west-1:214830741341:NewSentinel2Product
