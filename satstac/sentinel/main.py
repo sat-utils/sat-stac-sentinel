@@ -47,7 +47,7 @@ def add_items(catalog, start_date=None, end_date=None):
         now = datetime.now()
         dt = record['datetime'].date()
         if i % 10000 == 0:
-            print('Scanned %i records' % i+1)
+            print('Scanned %s records' % str(i+1))
         if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
             # skip to next if before start_date
             continue
@@ -60,7 +60,7 @@ def add_items(catalog, start_date=None, end_date=None):
             continue
         try:
             collection.add_item(item, path=SETTINGS['path_pattern'], filename='item')
-            logger.debug('Ingested %s in %s' % (item.id, datetime.now()-now))
+            logger.debug('Ingested %s in %s' % (item.filename, datetime.now()-now))
         except Exception as err:
             logger.error('Error adding %s: %s' % (item.id, err))
 
