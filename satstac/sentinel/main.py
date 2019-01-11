@@ -53,7 +53,7 @@ def add_items(catalog, start_date=None, end_date=None):
             continue
         try:
             url = record['url'].replace('sentinel-s2-l1c.s3.amazonaws.com', 'roda.sentinel-hub.com/sentinel-s2-l1c')
-            metadata = get_metadata(record['url'])
+            metadata = read_remote(record['url'])
             item = transform(metadata)
         except Exception as err:
             logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
@@ -157,16 +157,9 @@ def transform(data):
     return Item(_item)
 
 
-def get_metadata(url):
-    """ Convert Landsat MTL file to dictionary of metadata values """
+def read_remote(url):
+    """ Retrieve remote JSON """
     # Read MTL file remotely
     r = requests.get(url, stream=True)
     metadata = json.loads(r.text)
     return metadata
-
-
-def read_remote(url):
-    """ Return a line iterator for a remote file """
-    r = requests.get(url, stream=True)
-    for line in r.iter_lines():
-        yield line.decode()
