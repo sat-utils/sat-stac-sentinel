@@ -5,6 +5,7 @@ import logging
 import requests
 import sys
 
+import numpy as np
 import os.path as op
 
 from shapely.geometry import MultiPoint, Point
@@ -49,9 +50,10 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
         cols = {c.id: c for c in catalog.collections()}
     collection = cols['sentinel-2-l1c']
 
+    duration = []
     # iterate through records
     for i, record in enumerate(records()):
-        now = datetime.now()
+        start = datetime.now()
         dt = record['datetime'].date()
         if s3meta:
             url = op.join(SETTINGS['s3_url'], record['path'])
@@ -76,10 +78,11 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
             continue
         try:
             collection.add_item(item, path=SETTINGS['path_pattern'], filename='item')
-            logger.debug('Ingested %s in %s' % (item.filename, datetime.now()-now))
+            duration.append((datetime.now()-start).total_seconds())
+            logger.info('Ingested %s in %s' % (item.filename, duration[-1]))
         except Exception as err:
             logger.error('Error adding %s: %s' % (item.id, err))
-
+    logger.info('Read in %s records averaging %4.2f sec (%4.2f stddev)' % (i, np.mean(duration), np.std(duration)))
 
 def records():
     """ Return generator function for list of scenes """
