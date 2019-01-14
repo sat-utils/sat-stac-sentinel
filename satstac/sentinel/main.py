@@ -57,12 +57,12 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
         dt = record['datetime'].date()
         if s3meta:
             url = op.join(SETTINGS['s3_url'], record['path'])
-        if i == 1000:
-            break
         else:
             url = op.join(SETTINGS['roda_url'], record['path'])
         if i % 10000 == 0:
             print('Scanned %s records' % str(i+1))
+        if i == 500:
+            break
         if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
             # skip to next if before start_date
             continue
