@@ -29,8 +29,8 @@ SETTINGS = {
     's3_url': 'https://sentinel-s2-l1c.s3.amazonaws.com',
     'inv_bucket': 'sentinel-inventory',
     'inv_key': 'sentinel-s2-l1c/sentinel-s2-l1c-inventory',
-    'path_pattern': 'tiles/${sentinel:utm_zone}/${sentinel:latitude_band}/${sentinel:grid_square}/' + \
-                        '${year}/${month}/${day}/${sentinel:sequence}'
+    'path_pattern': '${sentinel:utm_zone}/${sentinel:latitude_band}/${sentinel:grid_square}/${date}',
+    'fname_pattern': '${id}'
 }
 
 
@@ -57,7 +57,8 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
         dt = record['datetime'].date()
         if s3meta:
             url = op.join(SETTINGS['s3_url'], record['path'])
-            
+        if i == 1000:
+            break
         else:
             url = op.join(SETTINGS['roda_url'], record['path'])
         if i % 10000 == 0:
@@ -65,6 +66,7 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
         if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
             # skip to next if before start_date
             continue
+        print('read meta', url)
         try:
             if s3meta:
                 signed_url, headers = utils.get_s3_signed_url(url, requestor_pays=True)
@@ -76,8 +78,9 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
         except Exception as err:
             logger.error('Error creating STAC Item %s: %s' % (record['path'], err))
             continue
+        print('read meta')
         try:
-            collection.add_item(item, path=SETTINGS['path_pattern'], filename='item')
+            collection.add_item(item, path=SETTINGS['path_pattern'], filename=SETTINGS['fname_pattern'])
             duration.append((datetime.now()-start).total_seconds())
             logger.info('Ingested %s in %s' % (item.filename, duration[-1]))
         except Exception as err:
