@@ -66,7 +66,6 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
         if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
             # skip to next if before start_date
             continue
-        print('read meta', url)
         try:
             if s3meta:
                 signed_url, headers = utils.get_s3_signed_url(url, requestor_pays=True)
@@ -78,7 +77,6 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
         except Exception as err:
             logger.error('Error creating STAC Item %s: %s' % (record['path'], err))
             continue
-        print('read meta')
         try:
             collection.add_item(item, path=SETTINGS['path_pattern'], filename=SETTINGS['fname_pattern'])
             duration.append((datetime.now()-start).total_seconds())
