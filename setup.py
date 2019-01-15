@@ -12,7 +12,7 @@ here = path.abspath(path.dirname(__file__))
 with io.open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     all_reqs = f.read().split('\n')
 
-install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
+install_requires = [x.strip() for x in all_reqs if 'git+' not in x and 'requirements' not in x]
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
 
 setup(
