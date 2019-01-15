@@ -5,6 +5,7 @@ import logging
 import requests
 import sys
 
+import numpy as np
 import os.path as op
 
 from shapely.geometry import MultiPoint, Point
@@ -25,15 +26,22 @@ _collection = Collection.open(op.join(op.dirname(__file__), 'sentinel-2-l1c.json
 
 SETTINGS = {
     'roda_url': 'https://roda.sentinel-hub.com/sentinel-s2-l1c',
+    's3_url': 'https://sentinel-s2-l1c.s3.amazonaws.com',
     'inv_bucket': 'sentinel-inventory',
     'inv_key': 'sentinel-s2-l1c/sentinel-s2-l1c-inventory',
-    'path_pattern': 'tiles/${sentinel:utm_zone}/${sentinel:latitude_band}/${sentinel:grid_square}/' + \
-                        '${year}/${month}/${day}/${sentinel:sequence}'
+    'path_pattern': '${sentinel:utm_zone}/${sentinel:latitude_band}/${sentinel:grid_square}',
+    'fname_pattern': '${date}/${id}'
 }
 
 
-def add_items(catalog, start_date=None, end_date=None):
-    """ Stream records to a collection with a transform function """
+def add_items(catalog, start_date=None, end_date=None, s3meta=False):
+    """ Stream records to a collection with a transform function 
+    
+    Keyword arguments:
+    start_date -- Process this date and after
+    end_date -- Process this date and earlier
+    s3meta -- Retrieve metadata from s3 rather than Sinergise URL (roda)
+    """
     
     # use existing collection or create new one if it doesn't exist
     cols = {c.id: c for c in catalog.collections()}
@@ -42,28 +50,40 @@ def add_items(catalog, start_date=None, end_date=None):
         cols = {c.id: c for c in catalog.collections()}
     collection = cols['sentinel-2-l1c']
 
+    duration = []
     # iterate through records
     for i, record in enumerate(records()):
-        now = datetime.now()
+        start = datetime.now()
         dt = record['datetime'].date()
+        if s3meta:
+            url = op.join(SETTINGS['s3_url'], record['path'])
+        else:
+            url = op.join(SETTINGS['roda_url'], record['path'])
         if i % 10000 == 0:
             print('Scanned %s records' % str(i+1))
+        #if i == 10:
+        #    break
         if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
             # skip to next if before start_date
             continue
         try:
-            url = record['url'].replace('sentinel-s2-l1c.s3.amazonaws.com', 'roda.sentinel-hub.com/sentinel-s2-l1c')
-            metadata = read_remote(record['url'])
+            if s3meta:
+                signed_url, headers = utils.get_s3_signed_url(url, requestor_pays=True)
+                resp = requests.get(signed_url, headers=headers)
+                metadata = json.loads(resp.text)
+            else:
+                metadata = read_remote(url)
             item = transform(metadata)
         except Exception as err:
-            logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
+            logger.error('Error creating STAC Item %s: %s' % (record['path'], err))
             continue
         try:
-            collection.add_item(item, path=SETTINGS['path_pattern'], filename='item')
-            logger.debug('Ingested %s in %s' % (item.filename, datetime.now()-now))
+            collection.add_item(item, path=SETTINGS['path_pattern'], filename=SETTINGS['fname_pattern'])
+            duration.append((datetime.now()-start).total_seconds())
+            logger.info('Ingested %s in %s' % (item.filename, duration[-1]))
         except Exception as err:
             logger.error('Error adding %s: %s' % (item.id, err))
-
+    logger.info('Read in %s records averaging %4.2f sec (%4.2f stddev)' % (i, np.mean(duration), np.std(duration)))
 
 def records():
     """ Return generator function for list of scenes """
@@ -85,7 +105,7 @@ def records():
             for info in inv:
                 yield {
                     'datetime': parse(info[3]),
-                    'url': op.join(SETTINGS['roda_url'], info[1])
+                    'path': info[1]
                 }
 
 
@@ -94,7 +114,7 @@ def transform(data):
     dt = parse(data['timestamp'])
     epsg = data['tileOrigin']['crs']['properties']['name'].split(':')[-1]
 
-    url = op.join('https://sentinel-s2-l1c.s3.amazonaws.com', data['path'])
+    url = op.join(SETTINGS['s3_url'], data['path'])
     roda_url = op.join(SETTINGS['roda_url'], data['path'])
 
     # geo

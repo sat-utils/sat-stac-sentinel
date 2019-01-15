@@ -28,7 +28,7 @@ class Test(unittest.TestCase):
     def test_records(self):
         for r in sentinel.records():
             assert('datetime' in r)
-            assert('url' in r)
+            assert('path' in r)
             break
 
     def test_transform(self):
@@ -36,12 +36,12 @@ class Test(unittest.TestCase):
         item = sentinel.transform(md)
         assert(str(item.date) == '2017-10-23')
         assert(item.data['type'] == 'Feature')
-        assert(len(item.data['assets']) == 18)
+        assert(len(item.data['assets']) == 17)
         assert(item['sentinel:sequence'] == "0")
 
     def test_get_metadata(self):
         """ Read Sentinel metadata """
         dat = self.read_test_metadata()
         url = 'https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/57/U/VB/2017/10/23/0/tileInfo.json'
-        md = sentinel.get_metadata(url)
+        md = sentinel.read_remote(url)
         assert(md == dat)

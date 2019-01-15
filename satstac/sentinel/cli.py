@@ -35,6 +35,7 @@ def parse_args(args):
     valid_date = lambda d: datetime.strptime(d, '%Y-%m-%d').date()
     parser.add_argument('--start', help='Start date of ingestion', default=None, type=valid_date)
     parser.add_argument('--end', help='End date of ingestion', default=None, type=valid_date)
+    parser.add_argument('--s3meta', help='Get metadata directly from S3 (requestor pays)', default=False, action='store_true')
 
     # command 2
     #parser = subparsers.add_parser('cmd2', parents=[pparser], help='Command 2', formatter_class=dhf)
@@ -53,7 +54,7 @@ def cli():
 
     if cmd == 'ingest':
         cat = Catalog.open(args['catalog'])
-        sentinel.add_items(cat, start_date=args['start'], end_date=args['end'])
+        sentinel.add_items(cat, start_date=args['start'], end_date=args['end'], s3meta=args['s3meta'])
 
 
 if __name__ == "__main__":

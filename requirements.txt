@@ -1,4 +1,2 @@
-sat-stac~=0.1.0rc5
-pyproj==1.9.6
+-r requirements-lambda.txt
 boto3==1.9.37
-shapely~=1.6.4.post2
