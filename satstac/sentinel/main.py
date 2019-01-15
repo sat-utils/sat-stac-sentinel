@@ -29,8 +29,8 @@ SETTINGS = {
     's3_url': 'https://sentinel-s2-l1c.s3.amazonaws.com',
     'inv_bucket': 'sentinel-inventory',
     'inv_key': 'sentinel-s2-l1c/sentinel-s2-l1c-inventory',
-    'path_pattern': '${sentinel:utm_zone}/${sentinel:latitude_band}/${sentinel:grid_square}/${date}',
-    'fname_pattern': '${id}'
+    'path_pattern': '${sentinel:utm_zone}/${sentinel:latitude_band}/${sentinel:grid_square}',
+    'fname_pattern': '${date}/${id}'
 }
 
 
