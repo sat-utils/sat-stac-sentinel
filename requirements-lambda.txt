@@ -1,5 +1,4 @@
-#sat-stac~=0.1.0
-git+https://github.com/sat-utils/sat-stac.git@caching
+sat-stac~=0.1.1
 pyproj==1.9.6
 shapely~=1.6.4.post2
 numpy~=1.15.4
