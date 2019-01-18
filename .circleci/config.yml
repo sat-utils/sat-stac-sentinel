@@ -44,7 +44,6 @@ jobs:
           command: |
             if [[ "$CIRCLE_BRANCH" == 'master' ]]; then
               sudo pip install awscli
-              pip install -r requirements-lambda.txt -t lambda/
               pip install . -t lambda/
               cd lambda/; zip -ru ../lambda-deploy.zip ./; cd ..
               aws lambda --region eu-central-1 update-function-code --function-name sat-stac-sentinel --zip-file fileb://lambda-deploy.zip
