@@ -34,7 +34,7 @@ SETTINGS = {
 }
 
 
-def add_items(catalog, start_date=None, end_date=None, s3meta=False, prefix=None):
+def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, prefix=None):
     """ Stream records to a collection with a transform function 
     
     Keyword arguments:
@@ -89,7 +89,8 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False, prefix=None
             logger.error('Error adding %s: %s' % (item.id, err))
     logger.info('Read in %s records averaging %4.2f sec (%4.2f stddev)' % (i, np.mean(duration), np.std(duration)))
 
-def records():
+
+def latest_inventory():
     """ Return generator function for list of scenes """
     s3 = boto3.client('s3')
     # get latest file
