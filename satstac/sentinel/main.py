@@ -54,17 +54,17 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False, prefix=None
     # iterate through records
     for i, record in enumerate(records()):
         start = datetime.now()
+        if i % 50000 == 0:
+            logger.info('%s: Scanned %s records' % (start, str(i)))
         dt = record['datetime'].date()
         if prefix is not None:
             # if path doesn't match provided prefix skip to next record
-            if path[:len(prefix)] != prefix:
+            if record['path'][:len(prefix)] != prefix:
                 continue
         if s3meta:
             url = op.join(SETTINGS['s3_url'], record['path'])
         else:
             url = op.join(SETTINGS['roda_url'], record['path'])
-        if i % 10000 == 0:
-            print('Scanned %s records' % str(i+1))
         #if i == 10:
         #    break
         if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
