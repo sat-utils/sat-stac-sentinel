@@ -7,7 +7,7 @@ import os.path as op
 
 from datetime import datetime
 from satstac import STACError, Collection
-from satstac.sentinel import transform, SETTINGS, get_metadata
+from satstac.sentinel import transform, SETTINGS, read_remote
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -30,7 +30,7 @@ def lambda_handler(event, context):
 
     for m in msg['tiles']:
         url = op.join(SETTINGS['roda_url'], m['path'], 'tileInfo.json')
-        metadata = get_metadata(url)
+        metadata = read_remote(url)
         logger.debug('Metadata: %s' % json.dumps(metadata))
         # transform to STAC
         item = transform(metadata)

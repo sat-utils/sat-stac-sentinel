@@ -179,7 +179,7 @@ def transform(data):
 
 def read_remote(url):
     """ Retrieve remote JSON """
-    # Read MTL file remotely
+    # Read JSON file remotely
     r = requests.get(url, stream=True)
     metadata = json.loads(r.text)
     return metadata
