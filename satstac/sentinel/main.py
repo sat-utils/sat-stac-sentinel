@@ -90,6 +90,18 @@ def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, pr
     logger.info('Read in %s records averaging %4.2f sec (%4.2f stddev)' % (i, np.mean(duration), np.std(duration)))
 
 
+def read_inventory(filename):
+    """ Create generator from inventory file """
+    with open(filename) as f:
+        f.readline()
+        for line in f.readlines():
+            parts = line.split(',')
+            yield {
+                'datetime': parse(parts[0]),
+                'path': parts[1]
+            }
+
+
 def latest_inventory():
     """ Return generator function for list of scenes """
     s3 = boto3.client('s3')
