@@ -34,7 +34,7 @@ SETTINGS = {
 }
 
 
-def add_items(catalog, start_date=None, end_date=None, s3meta=False):
+def add_items(catalog, start_date=None, end_date=None, s3meta=False, prefix=None):
     """ Stream records to a collection with a transform function 
     
     Keyword arguments:
@@ -55,6 +55,10 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
     for i, record in enumerate(records()):
         start = datetime.now()
         dt = record['datetime'].date()
+        if prefix is not None:
+            # if path doesn't match provided prefix skip to next record
+            if path[:len(prefix)] != prefix:
+                continue
         if s3meta:
             url = op.join(SETTINGS['s3_url'], record['path'])
         else:
