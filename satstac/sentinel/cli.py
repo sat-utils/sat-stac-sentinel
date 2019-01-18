@@ -68,5 +68,6 @@ def cli():
             f.write('datetime,path\n')
             [f.write('%s,%s\n' % (i['datetime'], i['path'])) for i in sentinel.latest_inventory()]
 
+
 if __name__ == "__main__":
     cli()
