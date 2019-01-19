@@ -52,7 +52,7 @@ def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, pr
 
     duration = []
     # iterate through records
-    for i, record in enumerate(records()):
+    for i, record in enumerate(records):
         start = datetime.now()
         if i % 50000 == 0:
             logger.info('%s: Scanned %s records' % (start, str(i)))
