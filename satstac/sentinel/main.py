@@ -98,7 +98,7 @@ def read_inventory(filename):
             parts = line.split(',')
             yield {
                 'datetime': parse(parts[0]),
-                'path': parts[1]
+                'path': parts[1].strip('\n')
             }
 
 
