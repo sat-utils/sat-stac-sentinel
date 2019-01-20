@@ -34,7 +34,7 @@ SETTINGS = {
 }
 
 
-def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, prefix=None):
+def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, prefix=None, publish=None):
     """ Stream records to a collection with a transform function 
     
     Keyword arguments:
@@ -49,6 +49,11 @@ def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, pr
         catalog.add_catalog(_collection)
         cols = {c.id: c for c in catalog.collections()}
     collection = cols['sentinel-2-l1c']
+
+    client = None
+    if publish:
+        parts = publish.split(':')
+        client = boto3.client('sns', region_name=parts[3])
 
     duration = []
     # iterate through records
@@ -83,6 +88,8 @@ def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, pr
             continue
         try:
             collection.add_item(item, path=SETTINGS['path_pattern'], filename=SETTINGS['fname_pattern'])
+            if client:
+                client.publish(TopicArn=publish, Message=json.dumps(item.data))
             duration.append((datetime.now()-start).total_seconds())
             logger.info('Ingested %s in %s' % (item.filename, duration[-1]))
         except Exception as err:

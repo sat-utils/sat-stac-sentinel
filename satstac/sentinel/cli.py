@@ -38,6 +38,7 @@ def parse_args(args):
     parser.add_argument('--prefix', help='Only ingest scenes with a path starting with prefix', default=None)
     parser.add_argument('--s3meta', help='Get metadata directly from S3 (requestor pays)', default=False, action='store_true')
     parser.add_argument('--filename', help='Inventory filename to use (default to fetch latest from bucket Inventory files)', default=None)
+    parser.add_argument('--publish', help='ARN to publish new Items to', default=None)
 
     # command 2
     h = 'Get latest inventory of tileInfo.json files'
@@ -62,7 +63,8 @@ def cli():
             records = sentinel.read_inventory(args['filename'])
         else:
             records = sentinel.latest_inventory()
-        sentinel.add_items(cat, records, start_date=args['start'], end_date=args['end'], prefix=args['prefix'], s3meta=args['s3meta'])
+        sentinel.add_items(cat, records, start_date=args['start'], end_date=args['end'],
+                           prefix=args['prefix'], s3meta=args['s3meta'], publish=args['publish'])
     elif cmd == 'inventory':
         with open(args['filename'], 'w') as f:
             f.write('datetime,path\n')
