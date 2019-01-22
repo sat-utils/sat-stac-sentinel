@@ -34,7 +34,7 @@ SETTINGS = {
 }
 
 
-def add_items(catalog, start_date=None, end_date=None, s3meta=False):
+def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, prefix=None, publish=None):
     """ Stream records to a collection with a transform function 
     
     Keyword arguments:
@@ -50,17 +50,26 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
         cols = {c.id: c for c in catalog.collections()}
     collection = cols['sentinel-2-l1c']
 
+    client = None
+    if publish:
+        parts = publish.split(':')
+        client = boto3.client('sns', region_name=parts[3])
+
     duration = []
     # iterate through records
-    for i, record in enumerate(records()):
+    for i, record in enumerate(records):
         start = datetime.now()
+        if i % 50000 == 0:
+            logger.info('%s: Scanned %s records' % (start, str(i)))
         dt = record['datetime'].date()
+        if prefix is not None:
+            # if path doesn't match provided prefix skip to next record
+            if record['path'][:len(prefix)] != prefix:
+                continue
         if s3meta:
             url = op.join(SETTINGS['s3_url'], record['path'])
         else:
             url = op.join(SETTINGS['roda_url'], record['path'])
-        if i % 10000 == 0:
-            print('Scanned %s records' % str(i+1))
         #if i == 10:
         #    break
         if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
@@ -79,13 +88,28 @@ def add_items(catalog, start_date=None, end_date=None, s3meta=False):
             continue
         try:
             collection.add_item(item, path=SETTINGS['path_pattern'], filename=SETTINGS['fname_pattern'])
+            if client:
+                client.publish(TopicArn=publish, Message=json.dumps(item.data))
             duration.append((datetime.now()-start).total_seconds())
             logger.info('Ingested %s in %s' % (item.filename, duration[-1]))
         except Exception as err:
             logger.error('Error adding %s: %s' % (item.id, err))
     logger.info('Read in %s records averaging %4.2f sec (%4.2f stddev)' % (i, np.mean(duration), np.std(duration)))
 
-def records():
+
+def read_inventory(filename):
+    """ Create generator from inventory file """
+    with open(filename) as f:
+        f.readline()
+        for line in f.readlines():
+            parts = line.split(',')
+            yield {
+                'datetime': parse(parts[0]),
+                'path': parts[1].strip('\n')
+            }
+
+
+def latest_inventory():
     """ Return generator function for list of scenes """
     s3 = boto3.client('s3')
     # get latest file

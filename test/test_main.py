@@ -26,7 +26,7 @@ class Test(unittest.TestCase):
         #fout = sentinel.main(sentinel, start_date=dt(2013, 10, 1).date())
 
     def test_records(self):
-        for r in sentinel.records():
+        for r in sentinel.latest_inventory():
             assert('datetime' in r)
             assert('path' in r)
             break

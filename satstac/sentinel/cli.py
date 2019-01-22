@@ -35,11 +35,16 @@ def parse_args(args):
     valid_date = lambda d: datetime.strptime(d, '%Y-%m-%d').date()
     parser.add_argument('--start', help='Start date of ingestion', default=None, type=valid_date)
     parser.add_argument('--end', help='End date of ingestion', default=None, type=valid_date)
+    parser.add_argument('--prefix', help='Only ingest scenes with a path starting with prefix', default=None)
     parser.add_argument('--s3meta', help='Get metadata directly from S3 (requestor pays)', default=False, action='store_true')
+    parser.add_argument('--filename', help='Inventory filename to use (default to fetch latest from bucket Inventory files)', default=None)
+    parser.add_argument('--publish', help='ARN to publish new Items to', default=None)
 
     # command 2
-    #parser = subparsers.add_parser('cmd2', parents=[pparser], help='Command 2', formatter_class=dhf)
-    # parser.add_argument()
+    h = 'Get latest inventory of tileInfo.json files'
+    parser = subparsers.add_parser('inventory', parents=[pparser], help=h, formatter_class=dhf)
+    fout = str(datetime.now().date()) + '.csv'
+    parser.add_argument('--filename', help='Filename to save', default=fout)
 
     # turn Namespace into dictinary
     parsed_args = vars(parser0.parse_args(args))
@@ -54,7 +59,16 @@ def cli():
 
     if cmd == 'ingest':
         cat = Catalog.open(args['catalog'])
-        sentinel.add_items(cat, start_date=args['start'], end_date=args['end'], s3meta=args['s3meta'])
+        if args['filename'] is not None:
+            records = sentinel.read_inventory(args['filename'])
+        else:
+            records = sentinel.latest_inventory()
+        sentinel.add_items(cat, records, start_date=args['start'], end_date=args['end'],
+                           prefix=args['prefix'], s3meta=args['s3meta'], publish=args['publish'])
+    elif cmd == 'inventory':
+        with open(args['filename'], 'w') as f:
+            f.write('datetime,path\n')
+            [f.write('%s,%s\n' % (i['datetime'], i['path'])) for i in sentinel.latest_inventory()]
 
 
 if __name__ == "__main__":
