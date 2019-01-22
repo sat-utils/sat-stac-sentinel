@@ -59,86 +59,86 @@
         "eo:off_nadir": 0,
         "eo:bands": [
             {
-                "id": "B01",
+                "name": "B01",
                 "common_name": "coastal",
                 "gsd": 60.0,
                 "center_wavelength": 0.4439,
                 "full_width_half_max": 0.027
             },
             {
-                "id": "B02",
+                "name": "B02",
                 "common_name": "blue",
                 "gsd": 10.0,
                 "center_wavelength": 0.4966,
                 "full_width_half_max": 0.098
             },
             {
-                "id": "B03",
+                "name": "B03",
                 "common_name": "green",
                 "gsd": 10.0,
                 "center_wavelength": 0.56,
                 "full_width_half_max": 0.045
             },
             {
-                "id": "B04",
+                "name": "B04",
                 "common_name": "red",
                 "gsd": 10.0,
                 "center_wavelength": 0.6645,
                 "full_width_half_max": 0.038
             },
             {
-                "id": "B05",
+                "name": "B05",
                 "gsd": 20.0,
                 "center_wavelength": 0.7039,
                 "full_width_half_max": 0.019
             },
             {
-                "id": "B06",
+                "name": "B06",
                 "gsd": 20.0,
                 "center_wavelength": 0.7402,
                 "full_width_half_max": 0.018
             },
             {
-                "id": "B07",
+                "name": "B07",
                 "gsd": 20.0,
                 "center_wavelength": 0.7825,
                 "full_width_half_max": 0.028
             },
             {
-                "id": "B08",
+                "name": "B08",
                 "common_name": "nir",
                 "gsd": 10.0,
                 "center_wavelength": 0.8351,
                 "full_width_half_max": 0.145
             },
             {
-                "id": "B8A",
+                "name": "B8A",
                 "gsd": 20.0,
                 "center_wavelength": 0.8648,
                 "full_width_half_max": 0.033
             },
             {
-                "id": "B09",
+                "name": "B09",
                 "gsd": 60.0,
                 "center_wavelength": 0.945,
                 "full_width_half_max": 0.026
             },
             {
-                "id": "B10",
+                "name": "B10",
                 "common_name": "cirrus",
                 "gsd": 60.0,
                 "center_wavelength": 1.3735,
                 "full_width_half_max": 0.075
             },
             {
-                "id": "B11",
+                "name": "B11",
                 "common_name": "swir16",
                 "gsd": 20.0,
                 "center_wavelength": 1.6137,
                 "full_width_half_max": 0.143
             },
             {
-                "id": "B12",
+                "name": "B12",
                 "common_name": "swir22",
                 "gsd": 20.0,
                 "center_wavelength": 2.22024,
