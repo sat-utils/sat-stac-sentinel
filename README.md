@@ -11,6 +11,7 @@ To create the Sentinel STAC catalog located at https://sentinel-stac.s3.amazonaw
 
 ## Installation
 
+Sat-stac-landsat can be installed from this repository. It is not in PyPi because it is not a library that is going to be of general use. It exists to create a Landsat STAC catalog and keep it up to date, which is currently ongoing.
 
 
 ## Usage
@@ -42,20 +43,47 @@ This will fetch the latest inventory files from s3://sentinel-inventory/sentinel
 
 This will ingest records either from a local inventory file or, if not provided, the latest bucket inventory files
 
+```
+$ sat-stac-sentinel ingest -h
+usage: sat-stac-sentinel ingest [-h] [--version] [--log LOG] [--start START]
+                                [--end END] [--prefix PREFIX] [--s3meta]
+                                [--filename FILENAME] [--publish PUBLISH]
+                                catalog
+
+positional arguments:
+  catalog              Catalog that contains the Collection
+
+optional arguments:
+  -h, --help           show this help message and exit
+  --version            Print version and exit
+  --log LOG            0:all, 1:debug, 2:info, 3:warning, 4:error, 5:critical
+                       (default: 2)
+  --start START        Start date of ingestion (default: None)
+  --end END            End date of ingestion (default: None)
+  --prefix PREFIX      Only ingest scenes with a path starting with prefix
+                       (default: None)
+  --s3meta             Get metadata directly from S3 (requestor pays)
+                       (default: False)
+  --filename FILENAME  Inventory filename to use (default to fetch latest from
+                       bucket Inventory files) (default: None)
+  --publish PUBLISH    ARN to publish new Items to (default: None)
+```
 
 The `catalog` argument is the URL to the root catalog which contains a child collection called 'sentinel-2-l1c'. If the 'sentinel-2-l1c' Collection does not exist in the Catalog it will be added. In the case of the catalog maintained by this repo it is located at https://sentinel-stac.s3.amazonaws.com/catalog.json.
 
 If `start` and/or `end` are provided the records are all scanned and only those meeting the date requirements are ingested.
 
+If `filename` is provided it will read the inventory from a file (generated with `sat-stac-sentinel inventory`) instead of retriving the latst bucket inventory files.
+
+The `s3meta` switch controls where the metadata comes from. The default is to get it from a proxy address rather than directly from the bucket (which is requestor pays). The actual cost is negligible, but it tunns out there is little difference in speed so this switch can be left alone.
+
+The `publish` switch allows publishing of a new STAC Item to an SNS topic. This should not be used when creating a whole catalog, it will create too many SNS messages.
 
 ## Transforming Sentinel metadata to STAC
 
-The data that is ingested by the sat-stac-sentinel CLI starts with
+The data that is ingested by the sat-stac-sentinel CLI starts with bucket inventory files that are retrieved and used to find all of the `tileInfo.json` files (this is the metadata for one Sentinel scene). In addition to the inventories, an SNS message is published (arn:aws:sns:us-west-2:274514004127:NewSceneHTML) whenever a new `index.html` appears in the bucket. The sat-stac-sentinel Lambda function listens for this message to get the link of the s3 path with the new scene.
 
-In addition to the inventories, an SNS message is published (arn:aws:sns:us-west-2:274514004127:NewSceneHTML) whenever a new `index.html` appears in the bucket. The sat-stac-sentinel Lambda function listens for this message to get the link of the s3 path with the new scene.
-
-
-
+In either case the tileInfo.json contains all of the data needed to create a STAC Item, however the given geometry is in native coordinates rather than lat/lon. The library reprojects the geometry using EPSG:4326. Additionally, the convex hull is calculated for the geometry. In most cases this doesn't make a difference, however some of the tile geometries can be long and complex. Taking the convex hull is a way to simplify the geometry without impacting search and discovery.
 
 ## Development
 
