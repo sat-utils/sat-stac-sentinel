@@ -100,7 +100,13 @@ def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, pr
 def read_inventory(filename):
     """ Create generator from inventory file """
     with open(filename) as f:
-        f.readline()
+        line = f.readline()
+        if 'datetime' not in line:
+            parts = line.split(',')
+            yield {
+                'datetime': parse(parts[0]),
+                'path': parts[1].strip('\n')
+            }
         for line in f.readlines():
             parts = line.split(',')
             yield {
