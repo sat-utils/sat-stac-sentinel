@@ -1,6 +1,8 @@
 # sat-stac-sentinel
 
-This is a repository used for the creation and maintenance of a [STAC](https://github.com/radiantearth/stac-spec) compliant [Sentinel catalog](https://sentinel-stac.s3.amazonaws.com/catalog.json) for data from the [Sentinel on AWS project](https://registry.opendata.aws/sentinel-2/) (located at s3://sentinel-s2-l1c/).
+This is a repository used for the creation and maintenance of a [STAC](https://github.com/radiantearth/stac-spec) compliant [Sentinel catalog](https://sentinel-stac.s3.amazonaws.com/catalog.json) for data from the [Sentinel on AWS project](https://registry.opendata.aws/sentinel-2/) (located at s3://sentinel-s2-l1c/).  New STAC Items (i.e., Sentinel scenes) are published to an SNS Topic on AWS: 'arn:aws:sns:eu-central-1:552188055668:sentinel-stac'
+
+The catalog can be browsed at https://sentinel-stac.s3.amazonaws.com/index.html.
 
 There are two pieces of this repository:
 
