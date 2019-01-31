@@ -100,7 +100,13 @@ def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, pr
 def read_inventory(filename):
     """ Create generator from inventory file """
     with open(filename) as f:
-        f.readline()
+        line = f.readline()
+        if 'datetime' not in line:
+            parts = line.split(',')
+            yield {
+                'datetime': parse(parts[0]),
+                'path': parts[1].strip('\n')
+            }
         for line in f.readlines():
             parts = line.split(',')
             yield {
@@ -159,19 +165,19 @@ def transform(data):
         'info': {'href': op.join(roda_url, 'tileInfo.json')},
         'metadata': {'href': op.join(roda_url, 'metadata.xml')},
         'tki': {'href': op.join(url, 'TKI.jp2')},
-        'B01': {'href': op.join(url, 'B01.TIF')},
-        'B02': {'href': op.join(url, 'B02.TIF')},
-        'B03': {'href': op.join(url, 'B03.TIF')},
-        'B04': {'href': op.join(url, 'B04.TIF')},
-        'B05': {'href': op.join(url, 'B05.TIF')},
-        'B06': {'href': op.join(url, 'B06.TIF')},
-        'B07': {'href': op.join(url, 'B07.TIF')},
-        'B08': {'href': op.join(url, 'B08.TIF')},
-        'B8A': {'href': op.join(url, 'B08.TIF')},
-        'B09': {'href': op.join(url, 'B09.TIF')},
-        'B10': {'href': op.join(url, 'B10.TIF')},
-        'B11': {'href': op.join(url, 'B11.TIF')},
-        'B12': {'href': op.join(url, 'B11.TIF')}
+        'B01': {'href': op.join(url, 'B01.jp2')},
+        'B02': {'href': op.join(url, 'B02.jp2')},
+        'B03': {'href': op.join(url, 'B03.jp2')},
+        'B04': {'href': op.join(url, 'B04.jp2')},
+        'B05': {'href': op.join(url, 'B05.jp2')},
+        'B06': {'href': op.join(url, 'B06.jp2')},
+        'B07': {'href': op.join(url, 'B07.jp2')},
+        'B08': {'href': op.join(url, 'B08.jp2')},
+        'B8A': {'href': op.join(url, 'B08.jp2')},
+        'B09': {'href': op.join(url, 'B09.jp2')},
+        'B10': {'href': op.join(url, 'B10.jp2')},
+        'B11': {'href': op.join(url, 'B11.jp2')},
+        'B12': {'href': op.join(url, 'B11.jp2')}
     })
     #if dt < datetime(2016,12,6):
     #    del assets['tki']
