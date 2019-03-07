@@ -173,7 +173,7 @@ def transform(data):
         'B06': {'href': op.join(url, 'B06.jp2')},
         'B07': {'href': op.join(url, 'B07.jp2')},
         'B08': {'href': op.join(url, 'B08.jp2')},
-        'B8A': {'href': op.join(url, 'B08.jp2')},
+        'B8A': {'href': op.join(url, 'B8A.jp2')},
         'B09': {'href': op.join(url, 'B09.jp2')},
         'B10': {'href': op.join(url, 'B10.jp2')},
         'B11': {'href': op.join(url, 'B11.jp2')},
