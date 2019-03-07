@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Fix filename of Band B8A, which was incorrectly set to B08, issue #11
+- Update temporal extent of collection to be datetime instead of just date
 
 ## [v0.1.0] - 2018-10-25
 
