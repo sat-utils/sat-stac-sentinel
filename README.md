@@ -13,7 +13,7 @@ To create the Sentinel STAC catalog located at https://sentinel-stac.s3.amazonaw
 
 ## Installation
 
-Sat-stac-landsat can be installed from this repository. It is not in PyPi because it is not a library that is going to be of general use. It exists to create a Landsat STAC catalog and keep it up to date, which is currently ongoing.
+Sat-stac-sentinel can be installed from this repository. It is not in PyPi because it is not a library that is going to be of general use. It exists to create a Sentinel STAC catalog and keep it up to date, which is currently ongoing.
 
 
 ## Usage
