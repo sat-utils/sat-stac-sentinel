@@ -81,11 +81,18 @@ The `s3meta` switch controls where the metadata comes from. The default is to ge
 
 The `publish` switch allows publishing of a new STAC Item to an SNS topic. This should not be used when creating a whole catalog, it will create too many SNS messages.
 
-## Transforming Sentinel metadata to STAC
+
+## Transforming Sentinel-2 metadata to STAC
 
 The data that is ingested by the sat-stac-sentinel CLI starts with bucket inventory files that are retrieved and used to find all of the `tileInfo.json` files (this is the metadata for one Sentinel scene). In addition to the inventories, an SNS message is published (arn:aws:sns:us-west-2:274514004127:NewSceneHTML) whenever a new `index.html` appears in the bucket. The sat-stac-sentinel Lambda function listens for this message to get the link of the s3 path with the new scene.
 
 In either case the tileInfo.json contains all of the data needed to create a STAC Item, however the given geometry is in native coordinates rather than lat/lon. The library reprojects the geometry using EPSG:4326. Additionally, the convex hull is calculated for the geometry. In most cases this doesn't make a difference, however some of the tile geometries can be long and complex. Taking the convex hull is a way to simplify the geometry without impacting search and discovery.
+
+
+## Transforming Sentinel-1 metadata to STAC
+
+The data that is ingested by the sat-stac-sentinel CLI starts with bucket inventory files that are retrieved and used to find all of the `productInfo.json` files (this is the metadata for one Sentinel scene). This does not contain all of the data needed to create a STAC item however. For each Sentinel-1 asset in the scene there is an XML annotation file (in the annotation/ subdirectory). Most of the data in the annotation file is the same across all annotation files within the scene, so only a single one is needed (there is asset specific data including statistics and noise estimates that are not needed). This annotation file is fetched (from a requester pays bucket), and usedto fill in the additional STAC metadata.
+
 
 ## Development
 
