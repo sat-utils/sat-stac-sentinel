@@ -3,6 +3,7 @@ import json
 
 import os.path as op
 
+from datetime import datetime, timedelta
 from gzip import GzipFile
 from io import BytesIO
 
@@ -71,3 +72,45 @@ def read_from_s3(bucket, key):
     if op.splitext(key)[1] == '.gz':
         body = GzipFile(None, 'rb', fileobj=BytesIO(body)).read()
     return body.decode('utf-8')
+
+
+def latest_inventory(bucket, key, filename):
+    """ Return generator function for specified filename in a Bucket inventory """
+    s3 = boto3.client('s3')
+    # get latest file
+    today = datetime.now()
+    _key = None
+    for dt in [today, today - timedelta(1)]:
+        prefix = op.join(key, dt.strftime('%Y-%m-%d'))
+        keys = [k for k in get_matching_s3_keys(bucket, prefix=prefix, suffix='manifest.json')]
+        if len(keys) == 1:
+            _key = keys[0]
+            break
+    if _key:
+        manifest = json.loads(read_from_s3(bucket, _key))
+        for f in manifest.get('files', []):
+            inv = read_from_s3(bucket, f['key']).split('\n')
+            inv = [i.replace('"', '').split(',') for i in inv if filename in i]
+            for info in inv:
+                yield {
+                    'datetime': parse(info[3]),
+                    'path': info[1]
+                }
+
+
+def read_inventory_file(filename):
+    """ Create generator from inventory file """
+    with open(filename) as f:
+        line = f.readline()
+        if 'datetime' not in line:
+            parts = line.split(',')
+            yield {
+                'datetime': parse(parts[0]),
+                'path': parts[1].strip('\n')
+            }
+        for line in f.readlines():
+            parts = line.split(',')
+            yield {
+                'datetime': parse(parts[0]),
+                'path': parts[1].strip('\n')
+            }
