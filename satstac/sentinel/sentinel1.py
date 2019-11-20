@@ -18,15 +18,15 @@ from satstac import Collection, Item, utils
 from urllib.parse import urljoin
 from xmljson import badgerfish as bf
 from xml.etree.ElementTree import fromstring
-from .utils import latest_inventory as inventory
 from .version import __version__
 
 
 logger = logging.getLogger(__name__)
 
 # Sentinel-1-l1c collection as defined by this repository
-_collection = Collection.open(op.join(op.dirname(__file__), 'sentinel-1-l1c.json'))
-bandmap = {b['name']: i for i, b in enumerate(_collection['sar:bands'])}
+#_collection = Collection.open(op.join(op.dirname(__file__), 'sentinel-1-l1c.json'))
+
+STAC_VERSION = '0.9.0'
 
 
 # settings used acoss package
@@ -38,117 +38,89 @@ SETTINGS = {
 }
 
 
-def latest_inventory():
-    """ Get latest inventory of Sentinel-1 bucket """
-    return inventory('sentinel-inventory', 'sentinel-s1-l1c/sentinel-s1-l1c-inventory', 'productInfo.json')
+def Transform(object):
+
+    def __init__(self):
+        self.collection = 'sentinel-1-l1c'
+
+    def to_stac(self, metadata, base_url='./'):
+        """ Transform Sentinel-1 metadata (from annotation XML) into a STAC item """
+
+        # get metadata filenames
+        filenames = metadata['filenameMap'].values()
+        meta_urls = [urljoin(base_url, a) for a in filenames if 'annotation' in a and 'calibration' not in a]
+
+        signed_url, headers = utils.get_s3_signed_url(meta_url, requestor_pays=True)
+        resp = requests.get(signed_url, headers=headers)
+        metadata = bf.data(fromstring(resp.text))
+
+        import pdb; pdb.set_trace()
 
 
-def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, prefix=None, publish=None):
-    """ Stream records to a collection with a transform function 
-    
-    Keyword arguments:
-    start_date -- Process this date and after
-    end_date -- Process this date and earlier
-    s3meta -- Retrieve metadata from s3 rather than Sinergise URL (roda)
-    """
-    
-    # use existing collection or create new one if it doesn't exist
-    cols = {c.id: c for c in catalog.collections()}
-    if 'sentinel-1-l1c' not in cols.keys():
-        catalog.add_catalog(_collection)
-        cols = {c.id: c for c in catalog.collections()}
-    collection = cols['sentinel-1-l1c']
+        adsHeader = metadata['product']['adsHeader']
+        imageInfo = metadata['product']['imageAnnotation']['imageInformation']
+        swathProcParams = metadata['product']['imageAnnotation']['processingInformation']['swathProcParamsList']['swathProcParams']
+        if isinstance(swathProcParams, list):
+            swathProcParams = swathProcParams[0]
+        props = {
+            'datetime': parse(adsHeader['startTime']['$']).isoformat(),
+            'start_datetime': parse(adsHeader['startTime']['$']).isoformat(),
+            'end_datetime': parse(adsHeader['stopTime']['$']).isoformat(),
+            'platform': 'sentinel-1%s' % adsHeader['missionId']['$'][2].lower(),
+            'sar:orbit_state': metadata['product']['generalAnnotation']['productInformation']['pass']['$'].lower(),
+            'sar:instrument_mode': adsHeader['mode']['$'],
+            'sar:product_type': adsHeader['productType']['$'],
+            'sar:looks_range': swathProcParams['rangeProcessing']['numberOfLooks']['$'],
+            'sar:looks_azimuth': swathProcParams['azimuthProcessing']['numberOfLooks']['$'],
+            'sar:incidence_angle': imageInfo['incidenceAngleMidSwath']['$']
+        }
+        
+        props['sat:relative_orbit'] = int(adsHeader['absoluteOrbitNumber']['$']/175.0)
 
-    client = None
-    if publish:
-        parts = publish.split(':')
-        client = boto3.client('sns', region_name=parts[3])
+        _item = {
+            'type': 'Feature',
+            'stac_version': STAC_VERSION,
+            'stac_extensions': ['dtr', 'sat', 'sar'],
+            'collection': 'sentinel-1',
+            'properties': props,
+            'assets': {}
+        }
 
-    duration = []
-    # iterate through records
-    for i, record in enumerate(records):
-        start = datetime.now()
-        if i % 50000 == 0:
-            logger.info('%s: Scanned %s records' % (start, str(i)))
-        dt = record['datetime'].date()
-        if prefix is not None:
-            # if path doesn't match provided prefix skip to next record
-            if record['path'][:len(prefix)] != prefix:
-                continue
-        if s3meta:
-            url = op.join(SETTINGS['s3_url'], record['path'])
-        else:
-            url = op.join(SETTINGS['roda_url'], record['path'])
-        #if i == 10:
-        #    break
-        if (start_date is not None and dt < start_date) or (end_date is not None and dt > end_date):
-            # skip to next if before start_date
-            continue
-        try:
-            productInfo = read_remote(url)
-            md_assets = [a for a in productInfo['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
-            meta_url = urljoin(SETTINGS['s3_url'], record['path'].replace('productInfo.json', md_assets[0]))
-            signed_url, headers = utils.get_s3_signed_url(meta_url, requestor_pays=True)
-            resp = requests.get(signed_url, headers=headers)
-            metadata = bf.data(fromstring(resp.text))
-            item = transform(productInfo['id'], productInfo['footprint']['coordinates'], metadata)
-            item.data['assets'] = create_assets(productInfo)
-        except Exception as err:
-            logger.error('Error creating STAC Item %s: %s' % (record['path'], err))
-            continue
-        try:
-            collection.add_item(item, path=SETTINGS['path_pattern'], filename=SETTINGS['fname_pattern'])
-            if client:
-                client.publish(TopicArn=publish, Message=json.dumps(item.data))
-            duration.append((datetime.now()-start).total_seconds())
-            logger.info('Ingested %s in %s' % (item.filename, duration[-1]))
-        except Exception as err:
-            logger.error('Error adding %s: %s' % (item.id, err))
-    logger.info('Read in %s records averaging %4.2f sec (%4.2f stddev)' % (i, np.mean(duration), np.std(duration)))
+        item['id'] = productInfo['id']
+        item.update(coordinates_to_geometry(productInfo['footprint']['coordinates'][0]))
+
+        # add assets from productInfo
+        item.data['assets'] = create_assets(productInfo)
 
 
-def transform(id, coordinates, metadata):
-    """ Transform Sentinel metadata (from tileInfo.json) into a STAC item """
+        return Item(_item)
 
-    # geo
-    lats = [c[1] for c in coordinates[0]]
-    lons = [c[0] for c in coordinates[0]]
-    bbox = [min(lons), min(lats), max(lons), max(lats)]
 
-    adsHeader = metadata['product']['adsHeader']
-    imageInfo = metadata['product']['imageAnnotation']['imageInformation']
-    swathProcParams = metadata['product']['imageAnnotation']['processingInformation']['swathProcParamsList']['swathProcParams']
-    if isinstance(swathProcParams, list):
-        swathProcParams = swathProcParams[0]
-    props = {
-        'datetime': parse(adsHeader['startTime']['$']).isoformat(),
-        'dtr:start_datetime': parse(adsHeader['startTime']['$']).isoformat(),
-        'dtr:end_datetime': parse(adsHeader['stopTime']['$']).isoformat(),
-        'sar:platform': 'sentinel-1%s' % adsHeader['missionId']['$'][2].lower(),
-        'sar:instrument_mode': adsHeader['mode']['$'],
-        'sar:type': adsHeader['productType']['$'],
-        'sar:absolute_orbit': adsHeader['absoluteOrbitNumber']['$'],
-        'sar:pass_direction': metadata['product']['generalAnnotation']['productInformation']['pass']['$'].lower(),
-        'sar:looks_range': swathProcParams['rangeProcessing']['numberOfLooks']['$'],
-        'sar:looks_azimuth': swathProcParams['azimuthProcessing']['numberOfLooks']['$'],
-        'sar:incidence_angle': imageInfo['incidenceAngleMidSwath']['$']
-    }
-    
-    props['sar:relative_orbit'] = int(props['sar:absolute_orbit']/175.0)
+    def kml_to_geometry(filename):
+        """ Convert KML to bbox and geometry """
+        # open local
+        with open(filename) as f:
+            kml = bf.data(fromstring(f.read()))['kml']['Document']['Folder']['GroundOverlay']
+            kml = kml['{http://www.google.com/kml/ext/2.2}LatLonQuad']['coordinates']['$']
+        coordinates = [list(map(float, pair.split(','))) for pair in kml.split(' ')]
+        coordinates.append(coordinates[0])
+        return coordinates_to_geometry(coordinates)
 
-    _item = {
-        'type': 'Feature',
-        'id': id,
-        'collection': 'sentinel-1-l1c',
-        'bbox': bbox,
-        'geometry': {
-            'type': 'Polygon',
-            'coordinates': coordinates
-        },
-        'properties': props,
-        'assets': {}
-    }
-    return Item(_item)
+
+    def coordinates_to_geometry(coordinates):
+        """ Convert coordinates to GeoJSON Geometry and bbox """
+        lats = [c[1] for c in coordinates]
+        lons = [c[0] for c in coordinates]
+        bbox = [min(lons), min(lats), max(lons), max(lats)]
+        return {
+            'bbox': bbox,
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': [coordinates]
+            }
+        }
+
+
 
 
 def create_assets(productInfo):
@@ -181,9 +153,3 @@ def create_assets(productInfo):
     return assets
 
 
-def read_remote(url):
-    """ Retrieve remote JSON """
-    # Read JSON file remotely
-    r = requests.get(url, stream=True)
-    metadata = json.loads(r.text)
-    return metadata

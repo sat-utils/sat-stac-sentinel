@@ -97,48 +97,6 @@ def add_items(catalog, records, start_date=None, end_date=None, s3meta=False, pr
     logger.info('Read in %s records averaging %4.2f sec (%4.2f stddev)' % (i, np.mean(duration), np.std(duration)))
 
 
-def read_inventory(filename):
-    """ Create generator from inventory file """
-    with open(filename) as f:
-        line = f.readline()
-        if 'datetime' not in line:
-            parts = line.split(',')
-            yield {
-                'datetime': parse(parts[0]),
-                'path': parts[1].strip('\n')
-            }
-        for line in f.readlines():
-            parts = line.split(',')
-            yield {
-                'datetime': parse(parts[0]),
-                'path': parts[1].strip('\n')
-            }
-
-
-def latest_inventory():
-    """ Return generator function for list of scenes """
-    s3 = boto3.client('s3')
-    # get latest file
-    today = datetime.now()
-    key = None
-    for dt in [today, today - timedelta(1)]:
-        prefix = op.join(SETTINGS['inv_key'], dt.strftime('%Y-%m-%d'))
-        keys = [k for k in get_matching_s3_keys(SETTINGS['inv_bucket'], prefix=prefix, suffix='manifest.json')]
-        if len(keys) == 1:
-            key = keys[0]
-            break
-    if key:
-        manifest = json.loads(read_from_s3(SETTINGS['inv_bucket'], key))
-        for f in manifest.get('files', []):
-            inv = read_from_s3(SETTINGS['inv_bucket'], f['key']).split('\n')
-            inv = [i.replace('"', '').split(',') for i in inv if 'tileInfo.json' in i]
-            for info in inv:
-                yield {
-                    'datetime': parse(info[3]),
-                    'path': info[1]
-                }
-
-
 def transform(data):
     """ Transform Sentinel metadata (from tileInfo.json) into a STAC item """
     dt = parse(data['timestamp'])
