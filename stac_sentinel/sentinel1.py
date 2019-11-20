@@ -38,10 +38,10 @@ SETTINGS = {
 }
 
 
-def Transform(object):
+class Transform(object):
 
     def __init__(self):
-        self.collection = 'sentinel-1-l1c'
+        self.collection = 'sentinel-s1-l1c'
 
     def to_stac(self, metadata, base_url='./'):
         """ Transform Sentinel-1 metadata (from annotation XML) into a STAC item """

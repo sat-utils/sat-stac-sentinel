@@ -6,7 +6,7 @@ from datetime import datetime
 
 import satstac
 from satstac import Catalog
-import satstac.sentinel as sentinel
+import stac_sentinel as sentinel
 from .version import __version__
 from .aws import latest_inventory, get_stac_items
 
@@ -28,8 +28,8 @@ def parse_args(args):
                          help='0:all, 1:debug, 2:info, 3:warning, 4:error, 5:critical')
     pparser.add_argument('-c', '--collection', help='Collection ID', default='sentinel-s2-l1c')
     pparser.add_argument('--prefix', help='Only ingest scenes with a path starting with prefix', default=None)
-    pparser.add_argument('--start', help='Only ingest scenes with a Last Modified Date past provided start date', default=None)
-    pparser.add_argument('--end', help='Only ingest scenes with a Last Modified Date before provided end date', default=None)
+    pparser.add_argument('--start_date', help='Only ingest scenes with a Last Modified Date past provided start date', default=None)
+    pparser.add_argument('--end_date', help='Only ingest scenes with a Last Modified Date before provided end date', default=None)
 
 
     # add subcommands
@@ -59,12 +59,11 @@ def cli():
     inventory = latest_inventory(args['collection'])
 
     if cmd == 'ingest':
-        import pdb; pdb.set_trace()
         transforms = {
-            'sentinel-s1-l1c': sentinel.sentinel1.Transform,
+            'sentinel-s1-l1c': sentinel.TransformS1,
             #'sentinel-s2-l1c': sentinel2.Transform
         }
-        for item in get_stac_items(**args):
+        for item in get_stac_items(sentinel.TransformS1(), **args):
             import pdb; pdb.set_trace()
 
         #cat = Catalog.open(args['catalog'])

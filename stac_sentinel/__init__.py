@@ -1,6 +1,7 @@
 import logging
 
-#import satstac.sentinel.sentinel1 as sentinel1
+from stac_sentinel.sentinel1 import Transform as TransformS1
+#from stac_sentinel.sentinel2 import Transform as TransformS2
 
 # quiet loggers
 logging.getLogger('botocore').propagate = False

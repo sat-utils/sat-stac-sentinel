@@ -23,7 +23,7 @@ RODA_URL = 'https://roda.sentinel-hub.com/'
 def latest_inventory(collection_id, **kwargs):
     # get latest AWS inventory for this collection
     inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection_id, collection_id)
-    inventory = s3.latest_inventory(inventory_url, **kwargs)
+    inventory = s3.latest_inventory(inventory_url, **kwargs, suffix='productInfo.json')
     return inventory
 
 
@@ -38,29 +38,34 @@ def get_stac_items(transform, **kwargs):
 
     duration = []
 
-    inventory = latest_inventory(transform.collection, **kwargs)
+    inventory = latest_inventory(kwargs.pop('collection'), **kwargs)
 
     # iterate through latest inventory
     for i, record in enumerate(inventory):
         start = datetime.now()
+        print('here')
         if i % 50000 == 0:
             logger.info('%s: Scanned %s records' % (start, str(i)))
 
         # TODO - option of getting from s3 instead?  Didn't seem to be faster last I checked
         # plus it also costs $ due to requestor pays
-        url = '%s/%s' % (RODA_URL, record['Key'])
+        url = '%s/%s/%s' % (RODA_URL, transform.collection, record['Key'])
 
         try:
             # get productInfo file
+            import pdb; pdb.set_trace()
             metadata = read_remote_json(url)
-
+            print(metadata)
             base_url = 'https://%s.s3.amazonaws.com/%s' % (record['Bucket'], record['Key'])
+            print(base_url)
+            
             item = transform.to_stac(metadata, base_url=base_url)
-
+            print(item)
+            import pdb; pdb.set_trace()
             yield item
 
         except Exception as err:
-            logger.error('Error creating STAC Item %s: %s' % (record['path'], err))
+            logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
             continue
         try:
             duration.append((datetime.now()-start).total_seconds())
@@ -73,6 +78,7 @@ def get_stac_items(transform, **kwargs):
 def read_remote_json(url):
     """ Retrieve remote JSON """
     # Read JSON file remotely
+    print(url)
     r = requests.get(url, stream=True)
     metadata = json.loads(r.text)
     return metadata

@@ -24,6 +24,12 @@ logger = logging.getLogger(__name__)
 
 _collection = Collection.open(op.join(op.dirname(__file__), 'sentinel-2-l1c.json'))
 
+
+class Transform(object):
+
+    def __init__(self):
+        self.collection = 'sentinel-s2-l1c'
+
 SETTINGS = {
     'roda_url': 'https://roda.sentinel-hub.com/sentinel-s2-l1c',
     's3_url': 'https://sentinel-s2-l1c.s3.amazonaws.com',
