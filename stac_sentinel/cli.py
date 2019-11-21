@@ -59,11 +59,7 @@ def cli():
     inventory = latest_inventory(args['collection'])
 
     if cmd == 'ingest':
-        transforms = {
-            'sentinel-s1-l1c': sentinel.TransformS1,
-            #'sentinel-s2-l1c': sentinel2.Transform
-        }
-        for item in get_stac_items(sentinel.TransformS1(), **args):
+        for item in get_stac_items(sentinel.TransformS1l1c(), **args):
             import pdb; pdb.set_trace()
 
         #cat = Catalog.open(args['catalog'])

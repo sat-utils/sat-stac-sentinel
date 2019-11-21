@@ -1,6 +1,6 @@
 import logging
 
-from stac_sentinel.sentinel1 import Transform as TransformS1
+from stac_sentinel.sentinel1l1c import Transform as TransformS1l1c
 #from stac_sentinel.sentinel2 import Transform as TransformS2
 
 # quiet loggers

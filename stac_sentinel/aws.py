@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 #    'path_pattern': '${year}/${month}/${day}/${sar:type}',
 #    'fname_pattern': '${id}'
 
-RODA_URL = 'https://roda.sentinel-hub.com/'
+RODA_URL = 'https://roda.sentinel-hub.com'
 
 
 def latest_inventory(collection_id, **kwargs):
@@ -43,21 +43,18 @@ def get_stac_items(transform, **kwargs):
     # iterate through latest inventory
     for i, record in enumerate(inventory):
         start = datetime.now()
-        print('here')
         if i % 50000 == 0:
             logger.info('%s: Scanned %s records' % (start, str(i)))
 
         # TODO - option of getting from s3 instead?  Didn't seem to be faster last I checked
         # plus it also costs $ due to requestor pays
         url = '%s/%s/%s' % (RODA_URL, transform.collection, record['Key'])
-
+        logger.debug('Fetching initial metadata: %s' % url)
         try:
             # get productInfo file
-            import pdb; pdb.set_trace()
             metadata = read_remote_json(url)
-            print(metadata)
-            base_url = 'https://%s.s3.amazonaws.com/%s' % (record['Bucket'], record['Key'])
-            print(base_url)
+            base_url = 's3://%s/%s' % \
+                        (record['Bucket'], op.dirname(record['Key']))                        
             
             item = transform.to_stac(metadata, base_url=base_url)
             print(item)
@@ -78,7 +75,6 @@ def get_stac_items(transform, **kwargs):
 def read_remote_json(url):
     """ Retrieve remote JSON """
     # Read JSON file remotely
-    print(url)
     r = requests.get(url, stream=True)
     metadata = json.loads(r.text)
     return metadata
