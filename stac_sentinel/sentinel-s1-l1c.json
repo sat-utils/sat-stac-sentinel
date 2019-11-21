@@ -1,0 +1,139 @@
+{
+    "stac_version": "0.9.0",
+    "stac_extensions": [
+        "instrument",
+        "sat"
+    ],
+    "id": "sentinel-1-l1c",
+    "title": "Sentinel-1 L1C",
+    "description": "Sentinel-1A and Sentinel-1B imagery",
+    "keywords": [
+        "sentinel",
+        "earth observation",
+        "esa",
+        "sar"
+    ],
+    "extent": {
+        "spatial": [
+            -180,
+            -90,
+            180,
+            90
+        ],
+        "temporal": [
+            "2013-06-01",
+            null
+        ]
+    },
+    "providers": [
+        {
+            "name": "ESA",
+            "roles": ["producer"],
+            "url": "https://earth.esa.int/web/guest/home"
+        },
+        {
+            "name": "Sinergise",
+            "roles": ["processor"],
+            "url": "https://registry.opendata.aws/sentinel-1/"
+        },
+        {
+            "name": "AWS",
+            "roles": ["host"],
+            "url": "http://sentinel-pds.s3-website.eu-central-1.amazonaws.com/"
+        },
+        {
+            "name": "Element 84",
+            "roles": ["processor"],
+            "url": "https://element84.com"
+        }
+    ],
+    "license": "proprietary",
+    "properties": {
+        "constellation": "sentinel-1",
+        "instruments": ["c-sar"],
+        "sar:frequency_band": "C",
+        "sar:polarization": ["HH", "HV", "VV", "VH"],
+        "sar:center_frequency": 5.405,
+        "sar:resolution_range": 50,
+        "sar:resolution_azimuth": 50,
+        "sar:pixel_spacing_range": 25,
+        "sar:pixel_spacing_azimuth": 25
+    },
+    "summaries": {
+        "platform": ["sentinel-1a", "sentinel-1b"]
+    },
+    "assets": {
+        "thumbnail": {
+            "title": "Thumbnail",
+            "type": "image/png",
+            "roles": ["thumbnail"]
+        },
+        "metadata": {
+            "title": "Metadata",
+            "type": "application/json",
+            "roles": ["metadata"]
+        },
+        "HH": {
+            "title": "HH",
+            "description": "HH Polarization",
+            "type": "image/tiff; application=geotiff",
+            "roles": ["analytic"],
+            "polarizations": ["HH"]
+        },
+        "HH-metadata": {
+            "title": "HH Metadata",
+            "description": "HH Polarization metadata",
+            "type": "application/xml",
+            "roles": ["analytic"]
+        },
+        "VV": {
+            "title": "VV",
+            "description": "VV Polarization",
+            "type": "image/tiff; application=geotiff",
+            "roles": ["metadata"],
+            "polarizations": ["VV"]
+        },
+        "VV-metadata": {
+            "title": "VV Metadata",
+            "description": "VV Polarization metadata",
+            "type": "application/xml",
+            "roles": ["metadata"]
+        },
+        "HV": {
+            "title": "HV",
+            "description": "HV Polarization",
+            "type": "image/tiff; application=geotiff",
+            "roles": ["analytic"],
+            "polarizations": ["HV"]
+        },
+        "HV-metadata": {
+            "title": "HV Metadata",
+            "description": "HV Polarization metadata",
+            "type": "application/xml",
+            "roles": ["analytic"]
+        },
+        "VH": {
+            "title": "VH",
+            "description": "VH Polarization",
+            "type": "image/tiff; application=geotiff",
+            "roles": ["analytic"],
+            "polarizations": ["VH"]
+        },
+        "VH-metadata": {
+            "title": "VH Metadata",
+            "description": "VH Polarization metadata",
+            "type": "application/xml",
+            "roles": ["analytic"]
+        }
+    },
+    "links": [
+        {
+            "rel": "license",
+            "href": "https://sentinel.esa.int/documents/247904/690755/Sentinel_Data_Legal_Notice"
+        },
+        {
+            "rel": "about",
+            "href": "https://sentinel.esa.int/web/sentinel/missions/sentinel-1"
+        }
+    ]
+}
