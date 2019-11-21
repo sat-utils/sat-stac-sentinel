@@ -12,69 +12,40 @@ from urllib.parse import urljoin
 logger = logging.getLogger(__name__)
 
 
-#    'RODA_URL': 'https://roda.sentinel-hub.com/',
-#    's3_url': 'https://%s.s3.amazonaws.com' % CID,
-#    'path_pattern': '${year}/${month}/${day}/${sar:type}',
-#    'fname_pattern': '${id}'
-
-RODA_URL = 'https://roda.sentinel-hub.com'
-
-
-def latest_inventory(collection_id, **kwargs):
-    # get latest AWS inventory for this collection
-    inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection_id, collection_id)
-    inventory = s3.latest_inventory(inventory_url, **kwargs, suffix='productInfo.json')
-    return inventory
-
-
 def get_stac_items(transform, **kwargs):
     """ Stream records to a collection with a transform function 
     
     Keyword arguments:
+    prefix -- Process only files keys begining with this prefix
+    suffix -- Process only files keys ending with this suffix
     start_date -- Process this date and after
     end_date -- Process this date and earlier
-    prefix -- Process only files who's key begins with this prefix
+    datetime_key -- Field to use for start_date/end_date comparison (defaults to LastModifiedDate)
+
+    Returns:
+    Iterator of STAC Items using specified Transform object
     """
+    RODA_URL = 'https://roda.sentinel-hub.com'
 
-    duration = []
-
-    inventory = latest_inventory(kwargs.pop('collection'), **kwargs)
+    # get latest AWS inventory for this collection
+    inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (transform.collection, transform.collection)
+    inventory = s3.latest_inventory(inventory_url, **kwargs, suffix='productInfo.json')
 
     # iterate through latest inventory
-    for i, record in enumerate(inventory):
-        start = datetime.now()
-        if i % 50000 == 0:
-            logger.info('%s: Scanned %s records' % (start, str(i)))
-
+    for record in inventory:
         # TODO - option of getting from s3 instead?  Didn't seem to be faster last I checked
         # plus it also costs $ due to requestor pays
         url = '%s/%s/%s' % (RODA_URL, transform.collection, record['Key'])
         logger.debug('Fetching initial metadata: %s' % url)
         try:
             # get productInfo file
-            metadata = read_remote_json(url)
-            base_url = 's3://%s/%s' % \
-                        (record['Bucket'], op.dirname(record['Key']))                        
-            
+            r = requests.get(url, stream=True)
+            metadata = json.loads(r.text)
+            base_url = 's3://%s/%s' % (record['Bucket'], op.dirname(record['Key']))                        
+            # transform to STAC Item
             item = transform.to_stac(metadata, base_url=base_url)
-            print(item)
-            import pdb; pdb.set_trace()
             yield item
 
         except Exception as err:
             logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
             continue
-        try:
-            duration.append((datetime.now()-start).total_seconds())
-            logger.info('Ingested %s in %s' % (item.filename, duration[-1]))
-        except Exception as err:
-            logger.error('Error adding %s: %s' % (item.id, err))
-    logger.info('Read in %s records averaging %4.2f sec (%4.2f stddev)' % (i, np.mean(duration), np.std(duration)))
-
-
-def read_remote_json(url):
-    """ Retrieve remote JSON """
-    # Read JSON file remotely
-    r = requests.get(url, stream=True)
-    metadata = json.loads(r.text)
-    return metadata

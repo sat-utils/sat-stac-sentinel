@@ -4,7 +4,7 @@
         "instrument",
         "sat"
     ],
-    "id": "sentinel-1-l1c",
+    "id": "sentinel-s1-l1c",
     "title": "Sentinel-1 L1C",
     "description": "Sentinel-1A and Sentinel-1B imagery",
     "keywords": [
