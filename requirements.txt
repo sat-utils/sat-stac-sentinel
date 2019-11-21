@@ -1,6 +1,6 @@
-sat-stac~=0.1.3
+sat-stac~=0.3.0
 pyproj==1.9.6
 shapely~=1.6.4.post2
 numpy~=1.15.4
-boto3==1.9.37
+boto3
 xmljson~=0.2.0
