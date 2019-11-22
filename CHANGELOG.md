@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Sentinel-1 support
+- Sentinel-2 L2A support
+
+### Changed
+- STAC version updated to 0.9.0
+- Complete refactor of library into a Class SentinelSTAC
+
+## Removed
+- Functionality for creating/appending to a Catalog. This library now just creates the Items from the original metadata and allows one to loop throught the STAC Items in the archive on AWS
+- Creating/appending to Catalogs can use this library, but it is outside the scope
+
 ### Fixed
 - Fix filename of Band B8A, which was incorrectly set to B08, issue #11
 - Update temporal extent of collection to be datetime instead of just date
