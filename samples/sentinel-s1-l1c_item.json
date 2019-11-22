@@ -1,0 +1,124 @@
+{
+    "type": "Feature",
+    "stac_version": "0.9.0",
+    "stac_extensions": [
+        "dtr",
+        "sat",
+        "sar"
+    ],
+    "id": "S1A_IW_GRDH_1SDH_20181010T113841_20181010T113906_024073_02A190",
+    "collection": "sentinel-s1-l1c",
+    "properties": {
+        "datetime": "2018-10-10T11:38:41.882761",
+        "start_datetime": "2018-10-10T11:38:41.882761",
+        "end_datetime": "2018-10-10T11:39:06.881815",
+        "platform": "sentinel-1a",
+        "sar:instrument_mode": "IW",
+        "sar:product_type": "GRD",
+        "sar:looks_range": 5,
+        "sar:looks_azimuth": 1,
+        "sat:orbit_state": "descending",
+        "sat:incidence_angle": 38.68273338658981,
+        "sat:relative_orbit": 137
+    },
+    "assets": {
+        "thumbnail": {
+            "title": "Thumbnail",
+            "type": "image/png",
+            "roles": [
+                "thumbnail"
+            ],
+            "href": "s3://sentinel-s1-l1c/GRD/2018/10/10/IW/DH/S1A_IW_GRDH_1SDH_20181010T113841_20181010T113906_024073_02A190_E24C/preview/quick-look.png"
+        },
+        "metadata": {
+            "title": "Metadata",
+            "type": "application/json",
+            "roles": [
+                "metadata"
+            ],
+            "href": "s3://sentinel-s1-l1c/GRD/2018/10/10/IW/DH/S1A_IW_GRDH_1SDH_20181010T113841_20181010T113906_024073_02A190_E24C/productInfo.json"
+        },
+        "HH": {
+            "title": "HH",
+            "description": "HH Polarization",
+            "type": "image/tiff; application=geotiff",
+            "roles": [
+                "analytic"
+            ],
+            "polarizations": [
+                "HH"
+            ],
+            "href": "s3://sentinel-s1-l1c/GRD/2018/10/10/IW/DH/S1A_IW_GRDH_1SDH_20181010T113841_20181010T113906_024073_02A190_E24C/measurement/iw-hh.tiff"
+        },
+        "HH-metadata": {
+            "title": "HH Metadata",
+            "description": "HH Polarization metadata",
+            "type": "application/xml",
+            "roles": [
+                "metadata"
+            ],
+            "href": "s3://sentinel-s1-l1c/GRD/2018/10/10/IW/DH/S1A_IW_GRDH_1SDH_20181010T113841_20181010T113906_024073_02A190_E24C/annotation/iw-hh.xml"
+        },
+        "HV": {
+            "title": "HV",
+            "description": "HV Polarization",
+            "type": "image/tiff; application=geotiff",
+            "roles": [
+                "analytic"
+            ],
+            "polarizations": [
+                "HV"
+            ],
+            "href": "s3://sentinel-s1-l1c/GRD/2018/10/10/IW/DH/S1A_IW_GRDH_1SDH_20181010T113841_20181010T113906_024073_02A190_E24C/measurement/iw-hv.tiff"
+        },
+        "HV-metadata": {
+            "title": "HV Metadata",
+            "description": "HV Polarization metadata",
+            "type": "application/xml",
+            "roles": [
+                "metadata"
+            ],
+            "href": "s3://sentinel-s1-l1c/GRD/2018/10/10/IW/DH/S1A_IW_GRDH_1SDH_20181010T113841_20181010T113906_024073_02A190_E24C/annotation/iw-hv.xml"
+        }
+    },
+    "links": [
+        {
+            "rel": "collection",
+            "type": "application/json",
+            "href": "https://raw.githubusercontent.com/sat-utils/sat-stac-sentinel/develop/stac_sentinel/sentinel-s1-l1c.json"
+        }
+    ],
+    "bbox": [
+        -78.332336,
+        69.70076,
+        -70.543823,
+        71.690079
+    ],
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [
+                    -71.861328,
+                    69.70076
+                ],
+                [
+                    -78.332336,
+                    70.212143
+                ],
+                [
+                    -77.485229,
+                    71.690079
+                ],
+                [
+                    -70.543823,
+                    71.151161
+                ],
+                [
+                    -71.861328,
+                    69.70076
+                ]
+            ]
+        ]
+    }
+}
