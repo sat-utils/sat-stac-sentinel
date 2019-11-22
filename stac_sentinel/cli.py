@@ -15,60 +15,53 @@ logger = logging.getLogger(__name__)
 def parse_args(args):
     desc = 'stac-sentinel (v%s)' % __version__
     dhf = argparse.ArgumentDefaultsHelpFormatter
-    parser0 = argparse.ArgumentParser(description=desc)
+    parser = argparse.ArgumentParser(description=desc, formatter_class=dhf)
 
-    pparser = argparse.ArgumentParser(add_help=False)
-    pparser.add_argument('--version', help='Print version and exit', action='version', version=__version__)
-    pparser.add_argument('--log', default=2, type=int,
+    parser.add_argument('--version', help='Print version and exit', action='version', version=__version__)
+    parser.add_argument('--log', default=2, type=int,
                          help='0:all, 1:debug, 2:info, 3:warning, 4:error, 5:critical')
-    pparser.add_argument('-c', '--collection', help='Collection ID', default='sentinel-s2-l1c')
-    pparser.add_argument('--prefix', help='Only ingest scenes with a path starting with prefix', default=None)
-    pparser.add_argument('--start_date', help='Only ingest scenes with a Last Modified Date past provided start date', default=None)
-    pparser.add_argument('--end_date', help='Only ingest scenes with a Last Modified Date before provided end date', default=None)
+    
+    # collection (required)
+    parser.add_argument('collection', help='Collection ID')
 
-    # add subcommands
-    subparsers = parser0.add_subparsers(dest='command')
+    # filtering
+    parser.add_argument('--prefix', help='Only ingest scenes with a path starting with prefix', default=None)
+    parser.add_argument('--start_date', help='Only ingest scenes with a Last Modified Date past provided start date', default=None)
+    parser.add_argument('--end_date', help='Only ingest scenes with a Last Modified Date before provided end date', default=None)
 
-    # command 1
-    parser = subparsers.add_parser('ingest', parents=[pparser], help='Ingest Sentinel STAC', formatter_class=dhf)
+    # output control
     parser.add_argument('--save', help='Save fetch Items as <id>.json files to this folder', default=None)
     #parser.add_argument('--publish', help='ARN to publish new Items to', default=None)
 
-    # command 2
-    #h = 'Get latest inventory of Sentinel metadata files'
-    #parser = subparsers.add_parser('inventory', parents=[pparser], help=h, formatter_class=dhf)
-    #parser.add_argument('--filename', help='Filename to save', default=str(datetime.now().date()) + '.csv')
 
     # turn Namespace into dictinary
-    parsed_args = vars(parser0.parse_args(args))
+    parsed_args = vars(parser.parse_args(args))
 
     return parsed_args
 
 
 def cli():
     args = parse_args(sys.argv[1:])
-    logging.basicConfig(stream=sys.stdout, level=args.pop('log') * 10)
-    cmd = args.pop('command')   
+    logging.basicConfig(stream=sys.stdout, level=args.pop('log') * 10) 
 
-    if cmd == 'ingest':
-        collection_id = args.pop('collection')
-        savepath = args.pop('save')
-        if savepath is not None:
-            makedirs(savepath, exist_ok=True)
-        for item in SentinelSTAC.get_aws_archive(collection_id, **args):
-            if savepath:
-                fname = op.join(savepath, '%s.json' % item['id'])
-                with open(fname, 'w') as f:
-                    f.write(dumps(item))
-            import pdb; pdb.set_trace()
+    collection_id = args.pop('collection')
+    savepath = args.pop('save')
+    if savepath is not None:
+        makedirs(savepath, exist_ok=True)
+    for item in SentinelSTAC.get_aws_archive(collection_id, **args):
+        if savepath:
+            fname = op.join(savepath, '%s.json' % item['id'])
+            with open(fname, 'w') as f:
+                f.write(dumps(item))
+        import pdb; pdb.set_trace()
 
-        #cat = Catalog.open(args['catalog'])
-        #if args['filename'] is not None:
-        #    records = sentinel.read_inventory(args['filename'])
-        #else:
-        #    records = sentinel.latest_inventory()
-        #sentinel.add_items(cat, records, start_date=args['start'], end_date=args['end'],
-        #                    prefix=args['prefix'], s3meta=args['s3meta'], publish=args['publish'])
+    #cat = Catalog.open(args['catalog'])
+    #if args['filename'] is not None:
+    #    records = sentinel.read_inventory(args['filename'])
+    #else:
+    #    records = sentinel.latest_inventory()
+    #sentinel.add_items(cat, records, start_date=args['start'], end_date=args['end'],
+    #                    prefix=args['prefix'], s3meta=args['s3meta'], publish=args['publish'])
 
 
 
