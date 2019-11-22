@@ -1,0 +1,182 @@
+{
+    "name": "S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332",
+    "id": "b69f6809-81d0-440f-a2f4-60aa352b2e6b",
+    "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332",
+    "timestamp": "2015-10-23T16:23:32.027Z",
+    "datatakeIdentifier": "GS2A_20151023T162332_001753_N02.04",
+    "sciHubIngestion": "2016-12-19T17:31:13.879Z",
+    "s3Ingestion": "2016-12-19T17:48:21.313Z",
+    "tiles": [
+        {
+            "path": "tiles/16/S/FJ/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 16,
+            "latitudeBand": "S",
+            "gridSquare": "FJ",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/16/T/FK/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 16,
+            "latitudeBand": "T",
+            "gridSquare": "FK",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/S/LD/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "S",
+            "gridSquare": "LD",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/S/LC/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "S",
+            "gridSquare": "LC",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/16/S/GH/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 16,
+            "latitudeBand": "S",
+            "gridSquare": "GH",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/16/S/FH/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 16,
+            "latitudeBand": "S",
+            "gridSquare": "FH",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/S/KD/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "S",
+            "gridSquare": "KD",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/T/ME/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "T",
+            "gridSquare": "ME",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/T/KE/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "T",
+            "gridSquare": "KE",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/S/MC/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "S",
+            "gridSquare": "MC",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/T/LE/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "T",
+            "gridSquare": "LE",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/S/KC/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "S",
+            "gridSquare": "KC",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/16/S/GJ/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 16,
+            "latitudeBand": "S",
+            "gridSquare": "GJ",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/16/T/GK/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 16,
+            "latitudeBand": "T",
+            "gridSquare": "GK",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        },
+        {
+            "path": "tiles/17/S/MD/2015/10/23/0",
+            "timestamp": "2015-10-23T16:23:33.456Z",
+            "utmZone": 17,
+            "latitudeBand": "S",
+            "gridSquare": "MD",
+            "datastrip": {
+                "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+                "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+            }
+        }
+    ],
+    "datastrips": [
+        {
+            "id": "S2A_OPER_MSI_L1C_DS_EPA__20161215T145224_S20151023T162333_N02.04",
+            "path": "products/2015/10/23/S2A_OPER_PRD_MSIL1C_PDMC_20161219T165601_R040_V20151023T162332_20151023T162332/datastrip/0"
+        }
+    ]
+}

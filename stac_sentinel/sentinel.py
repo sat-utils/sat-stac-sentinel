@@ -22,7 +22,7 @@ class SentinelSTAC(object):
     collections = {
         'sentinel-s1-l1c': 'productInfo.json',
         'sentinel-s2-l1c': 'tileInfo.json',
-        'sentinel-s2-l1a': 'tileInfo.json'
+        'sentinel-s2-l2a': 'tileInfo.json'
     }
 
     def __init__(self, collection, metadata):
@@ -114,7 +114,7 @@ class SentinelSTAC(object):
 
         # get latest AWS inventory for this collection
         inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection, collection)
-        inventory = s3.latest_inventory(inventory_url, **kwargs, suffix='productInfo.json')
+        inventory = s3.latest_inventory(inventory_url, **kwargs, suffix=cls.collections[collection])
 
         # iterate through latest inventory
         for record in inventory:
@@ -197,12 +197,10 @@ class SentinelSTAC(object):
     def to_stac_from_s2(self, base_url=''):
         """ Create STAC Item from Sentinel-2 L1C or L2A metadata """
         dt = parse(self.metadata['timestamp'])
-
         # Item properties
         props = {
-            'collection': 'sentinel-2-l1c',
             'datetime': dt.isoformat(),
-            'eo:platform': 'sentinel-2%s' % self.metadata['productName'][2].lower(),
+            'platform': 'sentinel-2%s' % self.metadata['productName'][2].lower(),
             'eo:cloud_cover': float(self.metadata['cloudyPixelPercentage']),
             'sentinel:utm_zone': self.metadata['utmZone'],
             'sentinel:latitude_band': self.metadata['latitudeBand'],
@@ -228,7 +226,7 @@ class SentinelSTAC(object):
         assets['thumbnail']['href'] = op.join(base_url, 'preview.jpg')
         assets['info']['href'] = op.join(base_url, 'tileInfo.json')
         assets['metadata']['href'] = op.join(base_url, 'metadata.xml')
-        assets['tki']['href'] = op.join(base_url, 'TKI.jp2')
+        assets['overview']['href'] = op.join(base_url, 'TKI.jp2')
         assets['B01']['href'] = op.join(base_url, 'B01.jp2')
         assets['B02']['href'] = op.join(base_url, 'B02.jp2')
         assets['B03']['href'] = op.join(base_url, 'B03.jp2')
@@ -246,7 +244,9 @@ class SentinelSTAC(object):
         #    del assets['tki']
 
         sid = str(self.metadata['utmZone']) + self.metadata['latitudeBand'] + self.metadata['gridSquare']
-        id = '%s_%s_%s_%s' % (self.metadata['productName'][0:3], sid, dt.strftime('%Y%m%d'), props['sentinel:sequence'] )
+        level = self.metadata['datastrip']['id'].split('_')[3]
+        id = '%s_%s_%s_%s_%s' % (self.metadata['productName'][0:3], sid,
+                                 dt.strftime('%Y%m%d'), props['sentinel:sequence'], level)
 
         item = {
             'type': 'Feature',
