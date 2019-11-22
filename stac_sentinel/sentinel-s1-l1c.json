@@ -84,7 +84,7 @@
             "title": "HH Metadata",
             "description": "HH Polarization metadata",
             "type": "application/xml",
-            "roles": ["analytic"]
+            "roles": ["metadata"]
         },
         "VV": {
             "title": "VV",
@@ -110,7 +110,7 @@
             "title": "HV Metadata",
             "description": "HV Polarization metadata",
             "type": "application/xml",
-            "roles": ["analytic"]
+            "roles": ["metadata"]
         },
         "VH": {
             "title": "VH",
@@ -123,7 +123,7 @@
             "title": "VH Metadata",
             "description": "VH Polarization metadata",
             "type": "application/xml",
-            "roles": ["analytic"]
+            "roles": ["metadata"]
         }
     },
     "links": [

@@ -5,9 +5,9 @@
         "sat",
         "eo"
     ],
-    "id": "sentinel-s2-l1c",
-    "title": "Sentinel 2 L1C",
-    "description": "Sentinel-2a and Sentinel-2b imagery, processed to Level 1C (Top-Of-Atmosphere Geometrically Corrected)",
+    "id": "sentinel-s2-l2a",
+    "title": "Sentinel 2 L2A",
+    "description": "Sentinel-2a and Sentinel-2b imagery, processed to Level 2A (Surface Reflectance)",
     "keywords": [
         "sentinel",
         "earth observation",
