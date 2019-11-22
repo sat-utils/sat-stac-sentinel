@@ -24,6 +24,7 @@ class SentinelSTAC(object):
         'sentinel-s2-l1c': 'tileInfo.json',
         'sentinel-s2-l2a': 'tileInfo.json'
     }
+    FREE_URL = 'https://roda.sentinel-hub.com'
 
     def __init__(self, collection, metadata):
         assert(collection in self.collections.keys())
@@ -102,15 +103,13 @@ class SentinelSTAC(object):
         """ Generator function returning the archive of Sentinel data on AWS
         Keyword arguments:
         prefix -- Process only files keys begining with this prefix
-        suffix -- Process only files keys ending with this suffix
         start_date -- Process this date and after
         end_date -- Process this date and earlier
-        datetime_key -- Field to use for start_date/end_date comparison (defaults to LastModifiedDate)
 
         Returns:
         Iterator of STAC Items using specified Transform object
         """
-        RODA_URL = 'https://roda.sentinel-hub.com'
+        
 
         # get latest AWS inventory for this collection
         inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection, collection)
@@ -118,7 +117,7 @@ class SentinelSTAC(object):
 
         # iterate through latest inventory
         for record in inventory:
-            url = '%s/%s/%s' % (RODA_URL, collection, record['Key'])
+            url = '%s/%s/%s' % (self.FREE_URL, collection, record['Key'])
             logger.debug('Fetching initial metadata: %s' % url)
             try:
                 # get initial JSON file file

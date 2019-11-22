@@ -1,41 +1,49 @@
 import boto3
 import json
 import logging
+import requests
 import sys
 
 import os.path as op
 
 from datetime import datetime
-from satstac import STACError, Collection
-from satstac.sentinel import transform, SETTINGS, read_remote
+from stac_sentinel import SentinelSTAC
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-client = boto3.client('sns', region_name='eu-central-1')
+client = boto3.client('sns', region_name=SentinelSTAC.region)
 
 # new Sentinel scene SNS ARN
 # arn:aws:sns:eu-west-1:214830741341:NewSentinel2Product
 
-# SNS Topic for publishing STAC Item
-sns_arn = 'arn:aws:sns:eu-central-1:552188055668:sentinel-stac'
+# SNS Topics for publishing STAC Item
+collections = {
+    'sentinel-s2-l1c': 'arn:aws:sns:eu-central-1:552188055668:sentinel-stac'
+}
 
 
 def lambda_handler(event, context):
-    logger.info('Event: %s' % json.dumps(event))
-    collection = Collection.open('https://sentinel-stac.s3.amazonaws.com/sentinel-2-l1c/catalog.json')
+    logger.debug('Event: %s' % json.dumps(event))
     
     msg = json.loads(event['Records'][0]['Sns']['Message'])
     logger.debug('Message: %s' % json.dumps(msg))
 
+    # sentinel-2
+    '''
     for m in msg['tiles']:
-        url = op.join(SETTINGS['roda_url'], m['path'], 'tileInfo.json')
-        metadata = read_remote(url)
+        # get metadata file
+        url = op.join(SentinelSTAC.FREE_URL, m['path'], 'tileInfo.json')
+        r = requests.get(url, stream=True)
+        metadata = json.loads(r.text)
         logger.debug('Metadata: %s' % json.dumps(metadata))
+
         # transform to STAC
-        item = transform(metadata)
+        scene = SentinelSTAC('sentinel-s2-l1c', metadata)
+        item = scene.to_stac()
         logger.info('Item: %s' % json.dumps(item.data))
-        #collection.add_item(item, path=SETTINGS['path_pattern'], filename=SETTINGS['fname_pattern'])
-        #logger.info('Added %s as %s' % (item, item.filename))
+
+        # publish to SNS
         client.publish(TopicArn=sns_arn, Message=json.dumps(item.data))
         logger.info('Published to %s' % sns_arn)
+    '''

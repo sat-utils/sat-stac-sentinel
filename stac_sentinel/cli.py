@@ -1,11 +1,11 @@
 import argparse
+import boto3
 import logging
 import sys
 
 from datetime import datetime
 from json import dumps
 from os import makedirs, path as op
-#from satstac import Catalog
 from .sentinel import SentinelSTAC
 from .version import __version__
 
@@ -44,25 +44,23 @@ def cli():
     args = parse_args(sys.argv[1:])
     logging.basicConfig(stream=sys.stdout, level=args.pop('log') * 10) 
 
+    publish = args.pop('publish', None)
+    if publish is not None:
+        client = boto3.client('sns', region_name=SentinelSTAC.region)
+
     collection_id = args.pop('collection')
     savepath = args.pop('save')
     if savepath is not None:
         makedirs(savepath, exist_ok=True)
     for item in SentinelSTAC.get_aws_archive(collection_id, **args):
+        # save items as JSON files
         if savepath:
             fname = op.join(savepath, '%s.json' % item['id'])
             with open(fname, 'w') as f:
                 f.write(dumps(item))
-        import pdb; pdb.set_trace()
-
-    #cat = Catalog.open(args['catalog'])
-    #if args['filename'] is not None:
-    #    records = sentinel.read_inventory(args['filename'])
-    #else:
-    #    records = sentinel.latest_inventory()
-    #sentinel.add_items(cat, records, start_date=args['start'], end_date=args['end'],
-    #                    prefix=args['prefix'], s3meta=args['s3meta'], publish=args['publish'])
-
+        # publish to SNS
+        if publish:
+            client.publish(TopicArn=publish, Message=dumps(item))
 
 
 if __name__ == "__main__":
