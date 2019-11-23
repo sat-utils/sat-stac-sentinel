@@ -64,6 +64,7 @@ class SentinelSTAC(object):
                 url, headers = s3.get_presigned_url(filename, aws_region=cls.region, requester_pays=True)
                 resp = requests.get(url, headers=headers)
                 # TODO - check response
+                logger.info('Get presigned URL response: (%s) %s' % (resp, resp.text))
                 metadata = resp.text
             elif op.exists(filename):
                 with open(filename) as f:
@@ -109,7 +110,6 @@ class SentinelSTAC(object):
         Returns:
         Iterator of STAC Items using specified Transform object
         """
-        
 
         # get latest AWS inventory for this collection
         inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection, collection)
@@ -117,7 +117,7 @@ class SentinelSTAC(object):
 
         # iterate through latest inventory
         for record in inventory:
-            url = '%s/%s/%s' % (self.FREE_URL, collection, record['Key'])
+            url = '%s/%s/%s' % (cls.FREE_URL, collection, record['Key'])
             logger.debug('Fetching initial metadata: %s' % url)
             try:
                 # get initial JSON file file
@@ -140,7 +140,10 @@ class SentinelSTAC(object):
         filenames = list(self.metadata['filenameMap'].values())
         meta_urls = ['%s/%s' % (base_url, a) for a in filenames if 'annotation' in a and 'calibration' not in a]
 
+        logger.info('meta url: %s' % meta_urls[0])
         extended_metadata = self.get_xml_metadata(meta_urls[0])
+
+        logger.debug('Extended metadata: %s' % json.dumps(extended_metadata))
 
         adsHeader = extended_metadata['product']['adsHeader']
         imageInfo = extended_metadata['product']['imageAnnotation']['imageInformation']

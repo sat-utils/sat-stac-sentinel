@@ -36,13 +36,13 @@ def lambda_handler(event, context):
     collection = None
     if 'tiles' in metadata:
         # sentinel-2
-        lvl = metadata['name'].split('_')[0][3:5]
+        lvl = metadata['name'].split('_')[1][3:5]
         if lvl == 'L1':
             collection = 'sentinel-s2-l1c'
         elif lvl == 'L2':
             collection = 'sentinel-s2-l2a'
     elif 'missionId' in metadata:
-        collection = 'sentinel-s1-l1a'
+        collection = 'sentinel-s1-l1c'
         
     if collection is None:
         msg = 'Message not recognized'
@@ -60,7 +60,8 @@ def lambda_handler(event, context):
         # there should never be more than one tile
         for md in metadata['tiles']:
             # get tile info for each tile
-            url = urljoin(SentinelSTAC.FREE_URL, md['path'], 'tileInfo.json')
+            url = '%s/%s/%s/tileInfo.json' % (SentinelSTAC.FREE_URL, collection, md['path'])
+            logger.info('metadata url = %s' % url)
             r = requests.get(url, stream=True)
             metadata = json.loads(r.text)
             logger.debug('Metadata: %s' % json.dumps(metadata))
