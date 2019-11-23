@@ -1,0 +1,370 @@
+{
+    "sourceBucket": "sentinel-s1-l1c",
+    "destinationBucket": "arn:aws:s3:::sentinel-inventory",
+    "version": "2016-11-30",
+    "creationTimestamp": "1574136000000",
+    "fileFormat": "CSV",
+    "fileSchema": "Bucket, Key, Size, LastModifiedDate",
+    "files": [
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/72d94d3d-e6f0-4f2c-af77-66e00f762cf1.csv.gz",
+            "size": 2881075,
+            "MD5checksum": "8243bebb4c1492fd41ea34815f8fa41a"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/d78d6953-d31b-40d1-b121-7646ddbcbf28.csv.gz",
+            "size": 2881677,
+            "MD5checksum": "6f7195625b879aaf42362cdcb4a15372"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/bf55a059-9418-46f1-8682-172f8e39e483.csv.gz",
+            "size": 2949990,
+            "MD5checksum": "96820898daa8db3c24c9e68b234ab634"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/3649c67d-c5db-41c0-a5f3-28047a25b29d.csv.gz",
+            "size": 2937185,
+            "MD5checksum": "c66eba453223f7028410d541f86ca30b"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/a4ba7dd7-c30f-421f-b4a8-116b2a6c86e1.csv.gz",
+            "size": 2889156,
+            "MD5checksum": "5fda244510fc721a979eba043dd91632"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/70e50614-99eb-47e0-a623-65ba6147d7a8.csv.gz",
+            "size": 2876958,
+            "MD5checksum": "f3061e6d4a5028331a0e2b26e3659f37"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/033b1656-9dd2-4fbb-a446-d10d286f6252.csv.gz",
+            "size": 2931786,
+            "MD5checksum": "3f33337916dd8d428925c425c886b797"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/d5d4c9cc-7b8c-4e22-a581-5610de8ed801.csv.gz",
+            "size": 2876893,
+            "MD5checksum": "cf90d7d4bbda2aa48035c83c6b639b03"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/988f897e-f31d-4774-b7d0-3a6f7b382725.csv.gz",
+            "size": 2878724,
+            "MD5checksum": "e4b1ffab4f210e07474263ab98f5e89b"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/1fbd3880-655e-4139-97e4-286ce3605ca2.csv.gz",
+            "size": 2949805,
+            "MD5checksum": "45fc6a288fedbe6e73c02d652760612c"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/4661d313-4b34-4975-9377-fedbbf862dc3.csv.gz",
+            "size": 2870293,
+            "MD5checksum": "dea949868d75ccfa86f8d1469696cf00"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/cce7e062-1fd7-4d9c-ae6f-0bccd13bb641.csv.gz",
+            "size": 2880516,
+            "MD5checksum": "0eee76693f6aa3b988220212cfb08ed5"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/e4842dd0-1f3d-4618-9459-3b814e759052.csv.gz",
+            "size": 2910658,
+            "MD5checksum": "79a4c1d6122c6f1ebe1472260ef1f783"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/2aa7dc0a-d105-428d-b556-9ecdbb5fb0a6.csv.gz",
+            "size": 2932399,
+            "MD5checksum": "96eb24e0e367466b133bcf88303c9d18"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/2836a93a-3fe5-4b4c-81ed-509b0e9450ae.csv.gz",
+            "size": 2137328,
+            "MD5checksum": "bb92474a7deabe794726218960ba41de"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/f8511881-fcaf-4a1b-a323-a2332425ba45.csv.gz",
+            "size": 2796702,
+            "MD5checksum": "ff8b1bd63eca5fcab139a9d75e2416ff"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/723d300d-00f9-4721-af90-2eee4bd70193.csv.gz",
+            "size": 2956106,
+            "MD5checksum": "86b102d25c0bbfb263f68fb0a169ac0b"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/8d2fc129-7c80-4c38-94c6-950d78900b1a.csv.gz",
+            "size": 2888788,
+            "MD5checksum": "6806eeac49b029af150fe5cab2cca92f"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/278e8703-8de6-4846-88b4-ab33f9927c82.csv.gz",
+            "size": 2952936,
+            "MD5checksum": "492d8e4b8e970055a27aa5b424ae9f76"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/a47ea854-e0f6-436a-b14a-52659742882d.csv.gz",
+            "size": 2937192,
+            "MD5checksum": "709ee24919d98cbe13d4ddd0f3775e33"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/41237e01-cdff-4294-bbc2-c30b454e8d66.csv.gz",
+            "size": 2910624,
+            "MD5checksum": "0690e61979d25b474cc832ed86d1d1d8"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/53f2f5cb-8ffb-4521-99da-e3cfb1d570c5.csv.gz",
+            "size": 2916775,
+            "MD5checksum": "61657ce590746bc4850c7b622c237759"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/f1a7abae-3adf-43d1-85bb-8b8092c862d2.csv.gz",
+            "size": 2917837,
+            "MD5checksum": "ee9d8c73d86c9d8dcaee92bd9beb2c32"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/95d4f4e4-9cfe-4082-8f34-25cf4bf4f30a.csv.gz",
+            "size": 2952098,
+            "MD5checksum": "801429423cf9aeee002360d0bb819fcb"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/5739947c-95c7-42eb-bdef-883ff2273866.csv.gz",
+            "size": 2890217,
+            "MD5checksum": "0f482459ae98bf3cd2a5995f901723fd"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/5ad74893-6aa8-4811-8bf4-2b126ab50b52.csv.gz",
+            "size": 2919103,
+            "MD5checksum": "97fd602c165f64e476d3319de5f5fc2e"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/7eb89fea-9637-4241-a0fe-6ea05eb59982.csv.gz",
+            "size": 2914084,
+            "MD5checksum": "f5a91a6d2742f2ba1a4164a4a746e301"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/fc02db04-640a-4371-9377-3e20abf5e43d.csv.gz",
+            "size": 2879540,
+            "MD5checksum": "e3597972c5b9a29d05d42a976bd52e91"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/1af0b454-a67b-4ac1-8df9-3a7065bc3691.csv.gz",
+            "size": 2880507,
+            "MD5checksum": "200bac92e7bb62768246eea9673a0faa"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/b4ed9b32-e989-4129-a524-d6e0733b24ba.csv.gz",
+            "size": 2934588,
+            "MD5checksum": "01f835a7508014352670035c276c1ffd"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/267535bb-b196-45fc-8ed4-9493f0214c55.csv.gz",
+            "size": 2879683,
+            "MD5checksum": "462d3ace1d954bdc7ed20f35d1327c50"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/05675a01-663a-40e9-b0a7-1385d4f5ced1.csv.gz",
+            "size": 2913590,
+            "MD5checksum": "bfb86e928b270d49c685d55843779365"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/02910179-f28e-4288-979f-c21e2994a154.csv.gz",
+            "size": 2885875,
+            "MD5checksum": "6f049d23a18f9de866adbd911f800e46"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/f480ae4f-16fb-4f37-9d08-13557a88096a.csv.gz",
+            "size": 2892797,
+            "MD5checksum": "f55acd21fce048995d1304235415881a"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/d77ac35e-0f8e-471e-95be-89b8067f0631.csv.gz",
+            "size": 2939462,
+            "MD5checksum": "ad051a9314f35895bddd5cfb45c503cf"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/d45844ff-b755-4177-bb7e-a833f9cad7dd.csv.gz",
+            "size": 2944777,
+            "MD5checksum": "11f32feafafc25ef04d078d639f05f15"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/0ecff3fb-9568-4794-8f85-34f8408fdff4.csv.gz",
+            "size": 2876542,
+            "MD5checksum": "40973b15cf6efbbcb3aed7a5189ae0cd"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/115c7e63-ca30-411c-9d86-dca0eb793478.csv.gz",
+            "size": 2875229,
+            "MD5checksum": "5254e3e6f2fe170fef0997bcd9975e0a"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/c6e585c5-61c9-43ba-acd6-65a2af581116.csv.gz",
+            "size": 2942635,
+            "MD5checksum": "a0c62bfb3e1cb051cbc5f4cf938260f6"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/0a5648e9-a04a-46dd-98bf-1f76761eab9e.csv.gz",
+            "size": 2954026,
+            "MD5checksum": "b68f630de27a95dcd3baafe6e030ba19"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/217b707f-a2c2-4d1e-8f44-abce458d56a1.csv.gz",
+            "size": 2914655,
+            "MD5checksum": "ddee6f9695b823b555e440811d60fc72"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/0aacebc9-c0a3-418f-a194-feb0e5c0323f.csv.gz",
+            "size": 2887862,
+            "MD5checksum": "bfd05d86c2dd044245efff575c8a4062"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/cdb3a87c-1e97-4f2f-ad11-eaec47dae7e3.csv.gz",
+            "size": 2954701,
+            "MD5checksum": "bdbd9b1c1ba6a1e73068d45e8b53a9e1"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/dfdeba70-d74c-4e60-a2c7-f068bfa47f01.csv.gz",
+            "size": 2956726,
+            "MD5checksum": "270cac8e3e509f1e4dbc12d09ba87b6f"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/f2fc8781-9656-4486-a1ff-e9cdfc087d2c.csv.gz",
+            "size": 2933061,
+            "MD5checksum": "266b596a811b21c23ba6632966c19617"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/564b3b4d-f550-430a-b3db-6fd306c5ff68.csv.gz",
+            "size": 2917251,
+            "MD5checksum": "e2e09fab4231670acd127e45f60fcd66"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/9906ba7c-28f2-4388-9aff-8c98c5d6a1ac.csv.gz",
+            "size": 2942198,
+            "MD5checksum": "7f77478e5ef95ebeee0aca64a424a48f"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/faf6b82a-9ab7-4589-8eaf-38e4c4052887.csv.gz",
+            "size": 2941040,
+            "MD5checksum": "80a5b43cbc2bcfe77a31482afc225c93"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/cfa0d1a6-5571-4599-87fd-26222cdd4385.csv.gz",
+            "size": 2935248,
+            "MD5checksum": "6a3f111c3302601e5ca65a6063392192"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/95face94-6d57-426c-b76c-f1f7c93650ed.csv.gz",
+            "size": 2939583,
+            "MD5checksum": "5e3203084830c03d873c38783978ee98"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/8cc72de3-4217-469d-ad64-625418619d21.csv.gz",
+            "size": 2918835,
+            "MD5checksum": "1e983d97ee6ca62dab0f6b3c4eeffcdc"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/3544f265-52b7-4ecc-8bee-28898fca2870.csv.gz",
+            "size": 2911221,
+            "MD5checksum": "eaf59aeecdc9873d10b010456c92f1c5"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/7e82cc89-5545-490b-93bc-654318b32fff.csv.gz",
+            "size": 2883628,
+            "MD5checksum": "272f0a84d43a8bfea9606e732c66f673"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/639af467-ae97-4b85-bf46-92eab12b8c94.csv.gz",
+            "size": 2877072,
+            "MD5checksum": "ece3b1ac502e7496bb3daa5d25eb50b2"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/5d9bbdeb-54a3-4879-a235-2fd25a2e6c93.csv.gz",
+            "size": 2880262,
+            "MD5checksum": "b70ea412b39f55859043611821285c71"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/fa76de57-3747-4cb8-b271-64686fd74217.csv.gz",
+            "size": 2955552,
+            "MD5checksum": "24c15a34ad1c1077bf3d1baef7e785bd"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/130b8644-cfdc-4114-b231-994cb3e5fe0a.csv.gz",
+            "size": 2877610,
+            "MD5checksum": "a4efb22220ab7648d558712dd1da91cb"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/ddeeac07-061c-4c32-97c9-31c53befb317.csv.gz",
+            "size": 2941694,
+            "MD5checksum": "a465047d9424e493d2f89dd356d0e1f7"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/12004efd-d70d-43fc-806f-feff2ac199a0.csv.gz",
+            "size": 2887253,
+            "MD5checksum": "da1a45842c3fafe361a256d2c7b36a01"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/cb95aff5-4ec0-4f0e-91a1-b24b9d1a8f09.csv.gz",
+            "size": 2912417,
+            "MD5checksum": "dc13150ccdcfbd61044124f84347499c"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/8e58cd30-653a-44b6-b1fb-6eaf0d3c37cf.csv.gz",
+            "size": 2877079,
+            "MD5checksum": "05a48a7e99a16880d74004e75ef831cd"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/c19d0738-b86e-4515-bd34-81a24c830445.csv.gz",
+            "size": 2871933,
+            "MD5checksum": "85734d9f8f7162332da5f2596ff6601d"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/73f2a819-1540-4180-87fa-aca3f8177049.csv.gz",
+            "size": 2935592,
+            "MD5checksum": "91895e9f263cb9488ef72a610138bc4f"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/7da082ef-8d66-4152-a11c-a697349ed0f4.csv.gz",
+            "size": 240148,
+            "MD5checksum": "0360fd3c672e6152179c2fbb055b0464"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/1d84873f-cc89-4317-b1c9-331c8bc15132.csv.gz",
+            "size": 2868122,
+            "MD5checksum": "6a1cda79663e962270a8cd6666d09996"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/1f39ddbc-dd9f-4fdd-84a7-c021294d83da.csv.gz",
+            "size": 2907362,
+            "MD5checksum": "dd1db5ad7709b91379af7007a4ebcc3f"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/5bd4a086-43f2-425e-be7f-44f75469a934.csv.gz",
+            "size": 2954140,
+            "MD5checksum": "451734023aad0da74c2bf720dd577a43"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/c31db017-27c4-40e9-9aab-b73aa2df2d68.csv.gz",
+            "size": 2921727,
+            "MD5checksum": "16b670777187a8a1be4117abe4037b72"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/e431bdd8-a5d4-4d2b-8af1-2ad02d8a0cb7.csv.gz",
+            "size": 2912146,
+            "MD5checksum": "5787e12827f4b0802c764a222401c3f6"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/e05df134-cab1-4f2c-91e9-7cfee0f57f15.csv.gz",
+            "size": 2924789,
+            "MD5checksum": "a405ad3ca5bbc1c6f7b96042bfa7c8cb"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/aea88fb2-f08a-4303-9536-df2402a37cc7.csv.gz",
+            "size": 2878037,
+            "MD5checksum": "667102156ab6596eb797278533408b77"
+        },
+        {
+            "key": "sentinel-s1-l1c/sentinel-s1-l1c-inventory/data/9a5e9ef4-0ba4-40ae-9f4b-5709f643d62e.csv.gz",
+            "size": 2943177,
+            "MD5checksum": "53b4f5e637e072199352e6e0b7e124b8"
+        }
+    ]
+}
