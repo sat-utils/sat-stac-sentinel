@@ -19,7 +19,7 @@ jobs:
         python3 -m pip install --user setuptools; 
         python3 -m pip install -r requirements-lambda.txt -t lambda/;
         python3 -m pip install --upgrade . --no-deps -t lambda/;
-        (cd lambda; zip -r ../lambda-deploy.zip)
+        (cd lambda; zip -ru ../lambda-deploy.zip ./)
     - name: AWS Lambda Deploy
       uses: appleboy/lambda-action@v0.0.1
       with:
