@@ -17,8 +17,8 @@ jobs:
       run: echo Hello, world!
     - name: Run a multi-line script
       run: |
-        pip install -r requirements-lambda.txt -t lambda/;
-        pip install . --no-deps -t lambda/;
+        pip3 install -r requirements-lambda.txt -t lambda/;
+        pip3 install . --no-deps -t lambda/;
         (cd lambda; zip -r ../lambda-deploy.zip)
     - name: AWS Lambda Deploy
       uses: appleboy/lambda-action@v0.0.1
