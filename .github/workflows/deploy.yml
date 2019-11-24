@@ -17,6 +17,7 @@ jobs:
       run: echo Hello, world!
     - name: Run a multi-line script
       run: |
+        pip3 install setuptools; 
         pip3 install -r requirements-lambda.txt -t lambda/;
         pip3 install . --no-deps -t lambda/;
         (cd lambda; zip -r ../lambda-deploy.zip)
