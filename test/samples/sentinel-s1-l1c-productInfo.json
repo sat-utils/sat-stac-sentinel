@@ -1,0 +1,50 @@
+{
+  "id" : "S1B_IW_GRDH_1SDH_20190220T095417_20190220T095442_015028_01C14D_B7F1",
+  "path" : "GRD/2019/2/20/IW/DH/S1B_IW_GRDH_1SDH_20190220T095417_20190220T095442_015028_01C14D_B7F1",
+  "missionId" : "S1B",
+  "productType" : "GRD",
+  "mode" : "IW",
+  "polarization" : "DH",
+  "startTime" : "2019-02-20T09:54:17",
+  "stopTime" : "2019-02-20T09:54:42",
+  "absoluteOrbitNumber" : 15028,
+  "missionDataTakeId" : 115021,
+  "productUniqueIdentifier" : "B7F1",
+  "sciHubIngestion" : "2019-02-20T11:00:37.267Z",
+  "s3Ingestion" : "2019-02-20T11:18:24.336Z",
+  "sciHubId" : "938195ca-11e6-4f08-b0c3-1887137bcb46",
+  "footprint" : {
+    "type" : "Polygon",
+    "crs" : {
+      "type" : "name",
+      "properties" : {
+        "name" : "urn:ogc:def:crs:EPSG:8.8.1:4326"
+      }
+    },
+    "coordinates" : [ [ [ -51.706875, 57.938152 ], [ -56.043655, 58.358997 ], [ -55.596794, 59.850086 ], [ -51.072006, 59.422554 ], [ -51.706875, 57.938152 ] ] ]
+  },
+  "filenameMap" : {
+    "support/s1-level-1-calibration.xsd" : "support/s1-level-1-calibration.xsd",
+    "support/s1-map-overlay.xsd" : "support/s1-map-overlay.xsd",
+    "annotation/s1b-iw-grd-hv-20190220t095417-20190220t095442-015028-01c14d-002.xml" : "annotation/iw-hv.xml",
+    "preview/map-overlay.kml" : "preview/map-overlay.kml",
+    "measurement/s1b-iw-grd-hh-20190220t095417-20190220t095442-015028-01c14d-001.tiff" : "measurement/iw-hh.tiff",
+    "annotation/calibration/noise-s1b-iw-grd-hv-20190220t095417-20190220t095442-015028-01c14d-002.xml" : "annotation/calibration/noise-iw-hv.xml",
+    "S1B_IW_GRDH_1SDH_20190220T095417_20190220T095442_015028_01C14D_B7F1.SAFE-report-20190220T103335.pdf" : "report-20190220T103335.pdf",
+    "annotation/calibration/noise-s1b-iw-grd-hh-20190220t095417-20190220t095442-015028-01c14d-001.xml" : "annotation/calibration/noise-iw-hh.xml",
+    "support/s1-product-preview.xsd" : "support/s1-product-preview.xsd",
+    "annotation/calibration/calibration-s1b-iw-grd-hv-20190220t095417-20190220t095442-015028-01c14d-002.xml" : "annotation/calibration/calibration-iw-hv.xml",
+    "support/s1-object-types.xsd" : "support/s1-object-types.xsd",
+    "support/s1-level-1-quicklook.xsd" : "support/s1-level-1-quicklook.xsd",
+    "preview/product-preview.html" : "preview/product-preview.html",
+    "support/s1-level-1-measurement.xsd" : "support/s1-level-1-measurement.xsd",
+    "support/s1-level-1-product.xsd" : "support/s1-level-1-product.xsd",
+    "support/s1-level-1-noise.xsd" : "support/s1-level-1-noise.xsd",
+    "annotation/calibration/calibration-s1b-iw-grd-hh-20190220t095417-20190220t095442-015028-01c14d-001.xml" : "annotation/calibration/calibration-iw-hh.xml",
+    "preview/quick-look.png" : "preview/quick-look.png",
+    "manifest.safe" : "manifest.safe",
+    "measurement/s1b-iw-grd-hv-20190220t095417-20190220t095442-015028-01c14d-002.tiff" : "measurement/iw-hv.tiff",
+    "preview/icons/logo.png" : "preview/icons/logo.png",
+    "annotation/s1b-iw-grd-hh-20190220t095417-20190220t095442-015028-01c14d-001.xml" : "annotation/iw-hh.xml"
+  }
+}

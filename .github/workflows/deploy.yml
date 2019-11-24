@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - master
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run a one-line script
+      run: echo Hello, world!
+    - name: Run a multi-line script
+      run: |
+        pip install -r requirements-lambda.txt -t lambda/
+        pip install . --no-deps -t lambda/
+        (cd lambda; zip -r ../lambda-deploy.zip)
+    - name: AWS Lambda Deploy
+      uses: appleboy/lambda-action@v0.0.1
+      with:
+        args: --function-name stac-sentinel-v0 --source lambda-deploy.zip
+      env:
+        AWS_ACCESS_KEY_ID:
+        AWS_SECRET_ACCESS_KEY
+        AWS_REGION: eu-central-1

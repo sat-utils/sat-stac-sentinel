@@ -1,1 +1,1 @@
-include satstac/*/*.json
+include stac_sentinel/*.json
