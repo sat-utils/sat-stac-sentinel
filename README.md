@@ -5,7 +5,7 @@ This repository is used for the creating [STAC Items](https://github.com/radiant
 The library includes:
 
 - STAC Collection metadata for [Sentinel-1 L1C](stac_sentinel/sentinel-s1-l1c.json), [Sentinel-2 L1C](stac_sentinel/sentinel-s2-l1c.json), and [Sentinel-2 L2A](stac_sentinel/sentinel-s2-l2a.json)
-- Function for transforming the original metadata of a scene (productInfo.json for Sentinel-1, tileInfo.json for Sentinel-2) into a STAC Item. See [samples](samples/)
+- Function for transforming the original metadata of a scene (productInfo.json for Sentinel-1, tileInfo.json for Sentinel-2) into a STAC Item. See [sample Items](samples/).
 - A Python generator function to loop through the entire archive of [Sentinel-1 on AWS](https://registry.opendata.aws/sentinel-1/) and [Sentinel-2 on AWS](https://registry.opendata.aws/sentinel-2/) for any of the Collections
 - A Command Line Interface (CLI) for fetching STAC Item metadata for the archives on AWS
 - A Lambda function that listens for new scenes on AWS and publishes the complete STAC Item to an SNS topic
