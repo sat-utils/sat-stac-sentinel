@@ -13,10 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
+    - name: Install dependencies and package script
       run: |
+        pip3 install --upgrade pip;
         pip3 install setuptools; 
         pip3 install -r requirements-lambda.txt -t lambda/;
         pip3 install . --no-deps -t lambda/;
