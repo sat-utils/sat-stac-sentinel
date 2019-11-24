@@ -15,18 +15,24 @@ The library includes:
 
 There is a publicly deployed version of the stac-sentinel Lambda function along with a publicly available SNS topic. Anyone can subscribe to the SNS topic from resources in their AWS account in order to get metadata for the latest Sentinel scenes.
 
-### Sentinel-1
+### Sentinel-1 L1C
 
 | STAC Version | SNS ARN  |
 | -------- | ----  |
-| 0.9.0    |  |
+| 0.9.0    | arn:aws:sns:eu-central-1:608149789419:stac-0-9-0_sentinel-s1-l1c |
 
-### Sentinel-2
+### Sentinel-2 L1C
 
 | STAC Version | SNS ARN  |
 | -------- | ----  |
 | 0.6.0    | arn:aws:sns:eu-central-1:552188055668:sentinel-stac |
-| 0.9.0    |  |
+| 0.9.0    | arn:aws:sns:eu-central-1:608149789419:stac-0-9-0_sentinel-s2-l1c |
+
+### Sentinel-2 L2A
+
+| STAC Version | SNS ARN  |
+| -------- | ----  |
+| 0.9.0    | arn:aws:sns:eu-central-1:608149789419:stac-0-9-0_sentinel-s2-l2a |
 
 
 ## Public Catalogs
