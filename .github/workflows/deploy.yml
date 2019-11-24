@@ -16,9 +16,9 @@ jobs:
     - name: Install dependencies and package script
       run: |
         pip3 install --upgrade pip;
-        pip3 install setuptools; 
-        pip3 install -r requirements-lambda.txt -t lambda/;
-        pip3 install . --no-deps -t lambda/;
+        python3 -m pip setuptools; 
+        python3 -m pip -r requirements-lambda.txt -t lambda/;
+        python3 -m pip . --no-deps -t lambda/;
         (cd lambda; zip -r ../lambda-deploy.zip)
     - name: AWS Lambda Deploy
       uses: appleboy/lambda-action@v0.0.1
