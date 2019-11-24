@@ -44,7 +44,11 @@ This section will be updated with newer catalogs as they become available.
 
 ## Installation
 
-If you are interested in using the library to create STAC Items from the historical archive rather than an existing catalog or new scene notifications, you will need to install this library from GitHub. To install the latest released version (from the `master` branch):
+If you are interested in using the library to create STAC Items from the historical archive rather than an existing catalog or new scene notifications, you will need to install this library from GitHub.
+
+Because stac-sentinel uses PyProj, the [PROJ system libraries](https://proj.org/) will be needed as well and needs to be installed as per your system. You could also consider using the [GeoLambda](https://github.com/developmentseed/geolambda) base Docker image, which includes PROJ.
+
+Then, to install the latest released version (from the `master` branch).
 
 ```
 $ pip install git+https://github.com/sat-utils/sat-stac-sentinel
