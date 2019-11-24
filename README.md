@@ -226,8 +226,8 @@ The `master` branch is the latest versioned release, while the `develop` branch 
 - Create PR and merge to master
 - Create a release on GitHub from `master` with the new version
 
-On a release (merge to `master`) CircleCI will package the Lambda code and deploy it to the production Lambda function that listens (via SNS) for new Sentinel scenes.
+Currently, the Lambda function needs to be deployed manually. It is `stac-sentinel-v0` located in `eu-central-1`.
 
 
 ## About
-[stac_sentinel](https://github.com/sat-utils/stac-sentinel) is part of a collection of tools called [sat-utils](https://github.com/sat-utils).
+[stac_sentinel](https://github.com/sat-utils/stac-sentinel) leverages the use of Spatio-Temporal Asset Catalogs](https://github.com/radiantearth/stac-spec)
