@@ -11,6 +11,17 @@ The library includes:
 - A Lambda function that listens for new scenes on AWS and publishes the complete STAC Item to an SNS topic
 
 
+## Table of Contents
+
+- [SNS Topics](#sns-topics)
+- [Public Catalogs](#public-catalogs)
+- [Installation](#installation)
+- [Usage](#usage)
+- [STAC Conversion Notes](#stac-conversion-notes)
+- [Development](#development)
+- [About](#about)
+
+
 ## SNS Topics
 
 There is a publicly deployed version of the stac-sentinel Lambda function along with a publicly available SNS topic. Anyone can subscribe to the SNS topic from resources in their AWS account (use the ARNs provided below) in order to get metadata for the latest Sentinel scenes. The SNS message is JSON that contains the STAC Item at:
@@ -39,7 +50,6 @@ For example, an SNS filter policy that only notifies the subscriber when an Item
 ```
 
 Thanks to Frederico Liporace for his article [Keeping a SpatioTemporal Asset Catalog (STAC) Up To Date with SNS/SQS](https://aws.amazon.com/blogs/publicsector/).
-
 
 ### SNS ARNs
 
@@ -205,7 +215,7 @@ Note however that in this example, the base_url of s3://sentinel-s2-l1c, is a re
 However, for Sentinel-1, there is an additional metadata file that is needed that is only available in the bucket. **If you have credentials defined when running this code, it will automatically use requester-pays and you will be charged!** 
 
 
-## Notes on STAC transofmration
+## STAC conversion notes
 
 ### Sentinel-1
 
@@ -216,6 +226,7 @@ The data that is ingested by the sat-stac-sentinel CLI starts with bucket invent
 The data that is ingested by the sat-stac-sentinel CLI starts with bucket inventory files that are retrieved and used to find all of the `tileInfo.json` files (this is the metadata for one Sentinel scene). In addition to the inventories, an SNS message is published (arn:aws:sns:us-west-2:274514004127:NewSceneHTML) whenever a new `index.html` appears in the bucket. The sat-stac-sentinel Lambda function listens for this message to get the link of the s3 path with the new scene.
 
 In either case the tileInfo.json contains all of the data needed to create a STAC Item, however the given geometry is in native coordinates rather than lat/lon. The library reprojects the geometry using EPSG:4326. Additionally, the convex hull is calculated for the geometry. In most cases this doesn't make a difference, however some of the tile geometries can be long and complex. Taking the convex hull is a way to simplify the geometry without impacting search and discovery.
+
 
 ## Development
 
