@@ -22,12 +22,10 @@ jobs:
         (cd lambda; zip -r ../lambda-deploy.zip)
     - name: AWS Lambda Deploy
       uses: appleboy/lambda-action@v0.0.1
-      args: [
+      args:
         "--function-name", "stac-sentinel-v0",
         "--source", "lambda-deploy.zip"
-      ]
-      secrets: [
+      secrets:
         "AWS_ACCESS_KEY_ID",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_REGION"
-      ]
