@@ -15,8 +15,15 @@ logger.setLevel(logging.DEBUG)
 
 client = boto3.client('sns', region_name=SentinelSTAC.region)
 
-# new Sentinel scene SNS ARN
-# arn:aws:sns:eu-west-1:214830741341:NewSentinel2Product
+# NOTE: this lambda function requires GeoLambda layers
+# - arn:aws:lambda:eu-central-1:552188055668:layer:geolambda:2
+# - arn:aws:lambda:eu-central-1:552188055668:layer:geolambda-python:1
+
+
+# NOTE: this lambda to be subscribed to the following SNS topics:
+# - (S1-L1C) arn:aws:sns:eu-central-1:214830741341:SentinelS1L1C
+# - (S2-L1C) arn:aws:sns:eu-west-1:214830741341:NewSentinel2Product
+# - (S2-L2A) arn:aws:sns:eu-central-1:214830741341:SentinelS2L2A
 
 # SNS Topics for publishing STAC Item
 collections = {
