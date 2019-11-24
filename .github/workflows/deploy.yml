@@ -1,4 +1,4 @@
-name: CI
+name: deploy to Lambda
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies and package script
       run: |
         pip3 install --user --upgrade pip;
-        python3 -m pip install setuptools; 
+        python3 -m pip install --user setuptools; 
         python3 -m pip install -r requirements-lambda.txt -t lambda/;
         python3 -m pip install . --no-deps -t lambda/;
         (cd lambda; zip -r ../lambda-deploy.zip)
