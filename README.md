@@ -13,22 +13,50 @@ The library includes:
 
 ## SNS Topics
 
-There is a publicly deployed version of the stac-sentinel Lambda function along with a publicly available SNS topic. Anyone can subscribe to the SNS topic from resources in their AWS account in order to get metadata for the latest Sentinel scenes.
+There is a publicly deployed version of the stac-sentinel Lambda function along with a publicly available SNS topic. Anyone can subscribe to the SNS topic from resources in their AWS account (use the ARNs provided below) in order to get metadata for the latest Sentinel scenes. The SNS message is JSON that contains the STAC Item at:
 
-### Sentinel-1 L1C
+```
+stac_item = message['Records'][0]['Sns']['Message']
+```
+
+The published message also uses [SNS Message attributes](https://docs.aws.amazon.com/sns/latest/dg/sns-message-attributes.html) that can be used to filter SNS messages using [SNS Message Filter](https://docs.aws.amazon.com/sns/latest/dg/sns-message-filtering.html). The published STAC SNS messages can be filtered using these attributes:
+
+- `properties.datetime`
+- `bbox.ll_lon`
+- `bbox.ur_lon`
+- `bbox.ll_lat`
+- `bbox.ur_lat`
+
+For example, an SNS filter policy that only notifies the subscriber when an Item is over Rio de Janeiro (22.9068° S, 43.1729° W) looks like this keeping-a-spatiotemporal-asset-catalog-stac-up-to-date-with-sns-sqs/)):
+
+```json
+{
+	"bbox.ll_lon": [{"numeric":["<=",-43.1729]}],
+	"bbox.ur_lon": [{"numeric":[">=",-43.1729]}],
+	"bbox.ll_lat": [{"numeric":["<=",-22.9068]}],
+	"bbox.ur_lat": [{"numeric":[">=",-22.9068]}]
+}
+```
+
+Thanks to Frederico Liporace for his article [Keeping a SpatioTemporal Asset Catalog (STAC) Up To Date with SNS/SQS](https://aws.amazon.com/blogs/publicsector/).
+
+
+### SNS ARNs
+
+#### Sentinel-1 L1C
 
 | STAC Version | SNS ARN  |
 | -------- | ----  |
 | 0.9.0    | arn:aws:sns:eu-central-1:608149789419:stac-0-9-0_sentinel-s1-l1c |
 
-### Sentinel-2 L1C
+#### Sentinel-2 L1C
 
 | STAC Version | SNS ARN  |
 | -------- | ----  |
 | 0.6.0    | arn:aws:sns:eu-central-1:552188055668:sentinel-stac |
 | 0.9.0    | arn:aws:sns:eu-central-1:608149789419:stac-0-9-0_sentinel-s2-l1c |
 
-### Sentinel-2 L2A
+#### Sentinel-2 L2A
 
 | STAC Version | SNS ARN  |
 | -------- | ----  |
