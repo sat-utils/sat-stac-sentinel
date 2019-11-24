@@ -81,5 +81,32 @@ def lambda_handler(event, context):
     for item in items:
         logger.info('Item: %s' % json.dumps(item))
         # publish to SNS
-        client.publish(TopicArn=collections[collection], Message=json.dumps(item))
+        client.publish(TopicArn=collections[collection], Message=json.dumps(item),
+                       MessageAttributes=get_sns_attributes(item))
         logger.info('Published %s to %s' % (item['id'], collections[collection]))
+
+
+def get_sns_attributes(item):
+    """ Get Attributes from STAC item for publishing to SNS """
+    return {
+        'properties.datetime': {
+            'DataType': 'String',
+            'StringValue': item['properties']['datetime']
+        },
+        'bbox.ll_lon': {
+            'DataType': 'Number',
+            'StringValue': str(item['bbox'][0])
+        },
+        'bbox.ll_lat': {
+            'DataType': 'Number',
+            'StringValue': str(item['bbox'][1])
+        },
+        'bbox.ur_lon': {
+            'DataType': 'Number',
+            'StringValue': str(item['bbox'][2])
+        },
+        'bbox.ur_lat': {
+            'DataType': 'Number',
+            'StringValue': str(item['bbox'][3])
+        }     
+    }

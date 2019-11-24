@@ -30,6 +30,7 @@ class SentinelSTAC(object):
         assert(collection in self.collections.keys())
         self.collection = collection
         self.metadata = metadata
+        self.item = None
 
     def to_stac(self, **kwargs):
         """ Convert metadata to a STAC Item """
@@ -37,6 +38,7 @@ class SentinelSTAC(object):
             item = self.to_stac_from_s1l1c(**kwargs)
         elif 'sentinel-s2' in self.collection:
             item = self.to_stac_from_s2(**kwargs)
+        self.item = item
         return item
 
     def get_collection(self):
