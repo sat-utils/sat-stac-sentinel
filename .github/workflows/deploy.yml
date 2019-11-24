@@ -23,9 +23,9 @@ jobs:
     - name: AWS Lambda Deploy
       uses: appleboy/lambda-action@v0.0.1
       args:
-        "--function-name", "stac-sentinel-v0",
-        "--source", "lambda-deploy.zip"
+        - "--function-name", "stac-sentinel-v0",
+        - "--source", "lambda-deploy.zip"
       secrets:
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
-        "AWS_REGION"
+        - "AWS_ACCESS_KEY_ID",
+        - "AWS_SECRET_ACCESS_KEY",
+        - "AWS_REGION"
