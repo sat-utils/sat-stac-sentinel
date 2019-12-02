@@ -230,7 +230,7 @@ class SentinelSTAC(object):
         assets['thumbnail']['href'] = op.join(base_url, 'preview.jpg')
         assets['info']['href'] = op.join(base_url, 'tileInfo.json')
         assets['metadata']['href'] = op.join(base_url, 'metadata.xml')
-        assets['overview']['href'] = op.join(base_url, 'TKI.jp2')
+        assets['overview']['href'] = op.join(base_url, 'TCI.jp2')
         assets['B01']['href'] = op.join(base_url, 'B01.jp2')
         assets['B02']['href'] = op.join(base_url, 'B02.jp2')
         assets['B03']['href'] = op.join(base_url, 'B03.jp2')
@@ -243,7 +243,7 @@ class SentinelSTAC(object):
         assets['B09']['href'] = op.join(base_url, 'B09.jp2')
         assets['B10']['href'] = op.join(base_url, 'B10.jp2')
         assets['B11']['href'] = op.join(base_url, 'B11.jp2')
-        assets['B12']['href'] = op.join(base_url, 'B11.jp2')
+        assets['B12']['href'] = op.join(base_url, 'B12.jp2')
         #if dt < datetime(2016,12,6):
         #    del assets['tki']
 

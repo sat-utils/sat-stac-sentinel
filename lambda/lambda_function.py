@@ -75,7 +75,7 @@ def lambda_handler(event, context):
 
             # transform to STAC
             scene = SentinelSTAC(collection, metadata)
-            item = scene.to_stac(base_url='https://nosuchaddress')
+            item = scene.to_stac(base_url='s3://%s/%s' % (collection, md['path']))
             items.append(item)
 
     for item in items:
