@@ -227,23 +227,48 @@ class SentinelSTAC(object):
 
         # assets
         assets = self.get_collection()['assets']
-        assets['thumbnail']['href'] = op.join(base_url, 'preview.jpg')
-        assets['info']['href'] = op.join(base_url, 'tileInfo.json')
-        assets['metadata']['href'] = op.join(base_url, 'metadata.xml')
-        assets['overview']['href'] = op.join(base_url, 'TCI.jp2')
-        assets['B01']['href'] = op.join(base_url, 'B01.jp2')
-        assets['B02']['href'] = op.join(base_url, 'B02.jp2')
-        assets['B03']['href'] = op.join(base_url, 'B03.jp2')
-        assets['B04']['href'] = op.join(base_url, 'B04.jp2')
-        assets['B05']['href'] = op.join(base_url, 'B05.jp2')
-        assets['B06']['href'] = op.join(base_url, 'B06.jp2')
-        assets['B07']['href'] = op.join(base_url, 'B07.jp2')
-        assets['B08']['href'] = op.join(base_url, 'B08.jp2')
-        assets['B8A']['href'] = op.join(base_url, 'B8A.jp2')
-        assets['B09']['href'] = op.join(base_url, 'B09.jp2')
-        assets['B10']['href'] = op.join(base_url, 'B10.jp2')
-        assets['B11']['href'] = op.join(base_url, 'B11.jp2')
-        assets['B12']['href'] = op.join(base_url, 'B12.jp2')
+        if self.collection == 'sentinel-s2-l1c':
+            assets['thumbnail']['href'] = op.join(base_url, 'preview.jpg')
+            assets['info']['href'] = op.join(base_url, 'tileInfo.json')
+            assets['metadata']['href'] = op.join(base_url, 'metadata.xml')
+            assets['overview']['href'] = op.join(base_url, 'TCI.jp2')
+            assets['B01']['href'] = op.join(base_url, 'B01.jp2')
+            assets['B02']['href'] = op.join(base_url, 'B02.jp2')
+            assets['B03']['href'] = op.join(base_url, 'B03.jp2')
+            assets['B04']['href'] = op.join(base_url, 'B04.jp2')
+            assets['B05']['href'] = op.join(base_url, 'B05.jp2')
+            assets['B06']['href'] = op.join(base_url, 'B06.jp2')
+            assets['B07']['href'] = op.join(base_url, 'B07.jp2')
+            assets['B08']['href'] = op.join(base_url, 'B08.jp2')
+            assets['B8A']['href'] = op.join(base_url, 'B8A.jp2')
+            assets['B09']['href'] = op.join(base_url, 'B09.jp2')
+            assets['B10']['href'] = op.join(base_url, 'B10.jp2')
+            assets['B11']['href'] = op.join(base_url, 'B11.jp2')
+            assets['B12']['href'] = op.join(base_url, 'B12.jp2')
+        elif self.collection == 'sentinel-s2-l2a':
+            # get link back to l1c data
+            s1_base_url = base_url.replace('sentinel-s2-l2a', 'sentinel-s2-l1a')
+            assets['thumbnail']['href'] = op.join(s1_base_url, 'preview.jpg')
+            assets['info']['href'] = op.join(base_url, 'tileInfo.json')
+            assets['metadata']['href'] = op.join(base_url, 'metadata.xml')
+            assets['overview_10m']['href'] = op.join(base_url, 'R10m/TCI.jp2')
+            assets['B02']['href'] = op.join(base_url, 'R10m/B02.jp2')
+            assets['B03']['href'] = op.join(base_url, 'R10m/B03.jp2')
+            assets['B04']['href'] = op.join(base_url, 'R10m/B04.jp2')
+            assets['B08']['href'] = op.join(base_url, 'R10m/B08.jp2')
+            assets['overview_20m']['href'] = op.join(base_url, 'R20m/TCI.jp2')
+            assets['B05']['href'] = op.join(base_url, 'R20m/B05.jp2')
+            assets['B06']['href'] = op.join(base_url, 'R20m/B06.jp2')
+            assets['B07']['href'] = op.join(base_url, 'R20m/B07.jp2')
+            assets['B8A']['href'] = op.join(base_url, 'R20m/B8A.jp2')
+            assets['B11']['href'] = op.join(base_url, 'R20m/B11.jp2')
+            assets['B12']['href'] = op.join(base_url, 'R20m/B12.jp2')
+            assets['overview_60m']['href'] = op.join(base_url, 'R60m/TCI.jp2')
+            assets['B01']['href'] = op.join(base_url, 'R60m/B01.jp2')
+            assets['B09']['href'] = op.join(base_url, 'R60m/B09.jp2')
+            assets['B10']['href'] = op.join(base_url, 'R60m/B10.jp2')
+        else:
+            raise Exception(f"Collection {self.collection} not supported")
         #if dt < datetime(2016,12,6):
         #    del assets['tki']
 
@@ -255,6 +280,7 @@ class SentinelSTAC(object):
         item = {
             'type': 'Feature',
             'id': id,
+            'collection': self.collection,
             'bbox': bbox,
             'geometry': geom,
             'properties':props,
