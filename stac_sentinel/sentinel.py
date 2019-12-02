@@ -251,7 +251,7 @@ class SentinelSTAC(object):
             assets['thumbnail']['href'] = op.join(s1_base_url, 'preview.jpg')
             assets['info']['href'] = op.join(base_url, 'tileInfo.json')
             assets['metadata']['href'] = op.join(base_url, 'metadata.xml')
-            assets['overview_10m']['href'] = op.join(base_url, 'R10m/TCI.jp2')
+            assets['overview']['href'] = op.join(base_url, 'R10m/TCI.jp2')
             assets['B02']['href'] = op.join(base_url, 'R10m/B02.jp2')
             assets['B03']['href'] = op.join(base_url, 'R10m/B03.jp2')
             assets['B04']['href'] = op.join(base_url, 'R10m/B04.jp2')
