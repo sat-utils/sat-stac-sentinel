@@ -2,7 +2,8 @@ import json
 import logging
 import requests
 
-import boto3utils.s3 as s3
+from boto3utils import s3
+from boto3utils.s3 import get_presigned_url
 import os.path as op
 
 from dateutil.parser import parse
@@ -63,7 +64,7 @@ class SentinelSTAC(object):
         try: 
             if filename[0:5] == 's3://':
                 # if s3, try presigned URL
-                url, headers = s3.get_presigned_url(filename, aws_region=cls.region, requester_pays=True)
+                url, headers = get_presigned_url(filename, aws_region=cls.region, requester_pays=True)
                 resp = requests.get(url, headers=headers)
                 # TODO - check response
                 logger.info('Get presigned URL response: (%s) %s' % (resp, resp.text))
@@ -115,7 +116,7 @@ class SentinelSTAC(object):
 
         # get latest AWS inventory for this collection
         inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection, collection)
-        inventory = s3.latest_inventory(inventory_url, **kwargs, suffix=cls.collections[collection])
+        inventory = s3().latest_inventory(inventory_url, **kwargs, suffix=cls.collections[collection])
 
         # iterate through latest inventory
         for record in inventory:
