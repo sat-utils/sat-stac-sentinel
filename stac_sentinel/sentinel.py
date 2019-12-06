@@ -247,7 +247,7 @@ class SentinelSTAC(object):
             assets['B12']['href'] = op.join(base_url, 'B12.jp2')
         elif self.collection == 'sentinel-s2-l2a':
             # get link back to l1c data
-            s1_base_url = base_url.replace('sentinel-s2-l2a', 'sentinel-s2-l1a')
+            s1_base_url = base_url.replace('sentinel-s2-l2a', 'sentinel-s2-l1c')
             assets['thumbnail']['href'] = op.join(s1_base_url, 'preview.jpg')
             assets['info']['href'] = op.join(base_url, 'tileInfo.json')
             assets['metadata']['href'] = op.join(base_url, 'metadata.xml')
