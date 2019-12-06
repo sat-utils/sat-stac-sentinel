@@ -31,8 +31,7 @@ def parse_args(args):
 
     # output control
     parser.add_argument('--save', help='Save fetch Items as <id>.json files to this folder', default=None)
-    #parser.add_argument('--publish', help='ARN to publish new Items to', default=None)
-
+    parser.add_argument('--publish', help='SNS to publish new Items to', default=None)
 
     # turn Namespace into dictinary
     parsed_args = vars(parser.parse_args(args))
