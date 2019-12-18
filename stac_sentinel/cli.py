@@ -4,6 +4,7 @@ import logging
 import sys
 
 from datetime import datetime
+from dateutil.parser import parse as dateparse
 from json import dumps
 from os import makedirs, path as op
 from .sentinel import SentinelSTAC
@@ -36,6 +37,10 @@ def parse_args(args):
     # turn Namespace into dictinary
     parsed_args = vars(parser.parse_args(args))
 
+    # convert date fields to dates
+    for d in ['start_date', 'end_date']:
+        if parsed_args[d]:
+            parsed_args[d] = dateparse(parsed_args[d]).date()
     return parsed_args
 
 
@@ -44,14 +49,13 @@ def cli():
     logging.basicConfig(stream=sys.stdout, level=args.pop('log') * 10) 
 
     publish = args.pop('publish', None)
-    if publish is not None:
-        client = boto3.client('sns', region_name=SentinelSTAC.region)
 
     collection_id = args.pop('collection')
     savepath = args.pop('save')
     if savepath is not None:
         makedirs(savepath, exist_ok=True)
-    for item in SentinelSTAC.get_aws_archive(collection_id, **args):
+    for i, item in enumerate(SentinelSTAC.get_aws_archive(collection_id, **args)):
+        print(item['properties']['datetime'], item['id'])
         # save items as JSON files
         if savepath:
             fname = op.join(savepath, '%s.json' % item['id'])
@@ -59,7 +63,10 @@ def cli():
                 f.write(dumps(item))
         # publish to SNS
         if publish:
+            client = boto3.client('sns', region_name=publish.split(':')[3])
             client.publish(TopicArn=publish, Message=dumps(item))
+        if i > 5:
+            break
 
 
 if __name__ == "__main__":
