@@ -280,6 +280,8 @@ class SentinelSTAC(object):
 
         item = {
             'type': 'Feature',
+            'stac_version': self.stac_version,
+            'stac_extensions': ['dtr', 'sat', 'eo'],            
             'id': id,
             'collection': self.collection,
             'bbox': bbox,
