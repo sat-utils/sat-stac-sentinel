@@ -179,7 +179,7 @@ class SentinelSTAC(object):
             # if this is AWS public dataset, filenames are named as mode-pol
             pol = op.splitext(f)[0].split('-')[-1].upper()
             # if not a public dataset, then filenames are the item ids
-            if pol not in ['HH', 'VV', 'VH'. 'HV']:
+            if pol not in ['HH', 'VV', 'VH', 'HV']:
                 pol = op.basename(f).split('-')[1].upper()
             fname = f.replace('annotation', 'measurement').replace('.xml', '.tiff')
             assets['%s' % pol]['href'] = base_url + '/' + fname
