@@ -180,7 +180,7 @@ class SentinelSTAC(object):
             pol = op.splitext(f)[0].split('-')[-1].upper()
             # if not a public dataset, then filenames are the item ids
             if pol not in ['HH', 'VV', 'VH', 'HV']:
-                pol = op.basename(f).split('-')[1].upper()
+                pol = op.basename(f).split('-')[3].upper()
             fname = f.replace('annotation', 'measurement').replace('.xml', '.tiff')
             assets['%s' % pol]['href'] = base_url + '/' + fname
             assets['%s-metadata' % pol]['href'] = base_url + '/' + f
