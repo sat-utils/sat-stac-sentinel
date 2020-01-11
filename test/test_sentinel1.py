@@ -4,7 +4,8 @@ import unittest
 from datetime import datetime as dt
 import os.path as op
 
-from satstac import Catalog, sentinel
+from satstac import Catalog
+from stac_sentinel import sentinel
 
 testpath = op.dirname(__file__)
 

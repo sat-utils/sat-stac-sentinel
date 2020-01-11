@@ -239,6 +239,9 @@ The `master` branch is the latest versioned release, while the `develop` branch 
 
 Currently, the Lambda function needs to be deployed manually. It is `stac-sentinel-v0` located in `eu-central-1`.
 
+```
+$ aws lambda update-function-code --function-name stac-sentinel-v0 --region eu-central-1 --zip-file fileb://lambda-deploy.zip
+```
 
 ## About
-[stac_sentinel](https://github.com/sat-utils/stac-sentinel) leverages the use of Spatio-Temporal Asset Catalogs](https://github.com/radiantearth/stac-spec)
+[stac_sentinel](https://github.com/sat-utils/stac-sentinel) leverages the use of [Spatio-Temporal Asset Catalogs](https://github.com/radiantearth/stac-spec)

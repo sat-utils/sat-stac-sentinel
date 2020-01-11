@@ -1,7 +1,6 @@
 {
     "stac_version": "0.9.0",
     "stac_extensions": [
-        "instrument",
         "sat"
     ],
     "id": "sentinel-s1-l1c",
@@ -52,12 +51,13 @@
         "constellation": "sentinel-1",
         "instruments": ["c-sar"],
         "sar:frequency_band": "C",
-        "sar:polarization": ["HH", "HV", "VV", "VH"],
+        "sar:polarizations": ["HH", "HV", "VV", "VH"],
         "sar:center_frequency": 5.405,
         "sar:resolution_range": 50,
         "sar:resolution_azimuth": 50,
         "sar:pixel_spacing_range": 25,
-        "sar:pixel_spacing_azimuth": 25
+        "sar:pixel_spacing_azimuth": 25,
+        "sar:observation_direction": "right"
     },
     "summaries": {
         "platform": ["sentinel-1a", "sentinel-1b"]
@@ -77,8 +77,8 @@
             "title": "HH",
             "description": "HH Polarization",
             "type": "image/tiff; application=geotiff",
-            "roles": ["analytic"],
-            "polarizations": ["HH"]
+            "roles": ["data"],
+            "sar:polarizations": ["HH"]
         },
         "HH-metadata": {
             "title": "HH Metadata",
@@ -90,8 +90,8 @@
             "title": "VV",
             "description": "VV Polarization",
             "type": "image/tiff; application=geotiff",
-            "roles": ["metadata"],
-            "polarizations": ["VV"]
+            "roles": ["data"],
+            "sar:polarizations": ["VV"]
         },
         "VV-metadata": {
             "title": "VV Metadata",
@@ -103,8 +103,8 @@
             "title": "HV",
             "description": "HV Polarization",
             "type": "image/tiff; application=geotiff",
-            "roles": ["analytic"],
-            "polarizations": ["HV"]
+            "roles": ["data"],
+            "sar:polarizations": ["HV"]
         },
         "HV-metadata": {
             "title": "HV Metadata",
@@ -116,8 +116,8 @@
             "title": "VH",
             "description": "VH Polarization",
             "type": "image/tiff; application=geotiff",
-            "roles": ["analytic"],
-            "polarizations": ["VH"]
+            "roles": ["data"],
+            "sar:polarizations": ["VH"]
         },
         "VH-metadata": {
             "title": "VH Metadata",

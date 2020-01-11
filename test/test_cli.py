@@ -3,7 +3,7 @@ import unittest
 
 from datetime import datetime as dt
 
-from satstac.sentinel.cli import parse_args
+from stac_sentinel.cli import parse_args
 
 testpath = os.path.dirname(__file__)
 
