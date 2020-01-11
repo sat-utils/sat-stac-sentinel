@@ -14,17 +14,9 @@ class Test(unittest.TestCase):
     """ Test main module """
 
     def read_test_metadata(self):
-        with open(op.join(testpath, 'sentinel-2-l1c-tileInfo.json')) as f:
+        with open(op.join(testpath, 'samples/sentinel-s2-l1c-tileInfo.json')) as f:
             dat = json.loads(f.read())
         return dat
-
-    def test_main(self):
-        """ Run main function """
-        # create test catalog
-        fname = op.join(testpath, 'test_main', 'catalog.json')
-        cat = Catalog.create(id='test').save_as(fname)
-        assert(op.exists(fname))
-        #fout = sentinel.main(sentinel, start_date=dt(2013, 10, 1).date())
 
     def test_records(self):
         for r in sentinel.latest_inventory():

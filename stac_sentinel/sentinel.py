@@ -186,7 +186,7 @@ class SentinelSTAC(object):
         item = {
             'type': 'Feature',
             'stac_version': self.stac_version,
-            'stac_extensions': ['dtr', 'sat', 'sar'],
+            'stac_extensions': ['sat', 'sar'],
             'id': '_'.join(self.metadata['id'].split('_')[0:-1]),
             'collection': self.collection,
             'properties': props,
