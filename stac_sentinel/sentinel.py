@@ -145,7 +145,7 @@ class SentinelSTAC(object):
                 logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
                 continue
 
-    def to_stac_from_s1l1c(self, base_url=getcwd()):
+    def to_stac_from_s1l1c(self, **kwargs):
         """ Transform Sentinel-1 L1c metadata (from annotation XML) into a STAC item """
         logger.debug('Metadata filename: %s' % self.metadata['filenames'][0])
         extended_metadata = self.get_xml_metadata(self.metadata['filenames'][0])
@@ -176,11 +176,11 @@ class SentinelSTAC(object):
         assets = self.get_collection()['assets']
 
         # populate Asset URLs
-        inpath = op.dirname(self.metadata['filenames'][0])
-        assets['thumbnail']['href'] = f"{base_url}/{inpath}/preview/quick-look.png"
+        prefix = self.metadata['filenames'][0].split('annotation')[0].strip('/')
+        assets['thumbnail']['href'] = f"{prefix}/preview/quick-look.png"
         if 'path' in self.metadata:
             # this means input metadata was from productInfo, so link to that
-            assets['metadata']['href'] = base_url + '/productInfo.json'
+            assets['metadata']['href'] = prefix + '/productInfo.json'
         for f in self.metadata['filenames']:
             # if this is AWS public dataset, filenames are named as mode-pol
             pol = op.splitext(f)[0].split('-')[-1].upper()
@@ -189,8 +189,8 @@ class SentinelSTAC(object):
                 pol = op.basename(f).split('-')[3].upper()
             print('filename', f, pol)
             fname = f.replace('annotation', 'measurement').replace('.xml', '.tiff')
-            assets['%s' % pol]['href'] = base_url + '/' + fname
-            assets['%s-metadata' % pol]['href'] = base_url + '/' + f
+            assets['%s' % pol]['href'] = fname
+            assets['%s-metadata' % pol]['href'] = f
 
         # drop any assets for which there is no url
         assets = {k: assets[k] for k in assets if 'href' in assets[k]}
