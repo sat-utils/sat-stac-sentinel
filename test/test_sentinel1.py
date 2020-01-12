@@ -5,7 +5,7 @@ from datetime import datetime as dt
 import os.path as op
 
 from satstac import Catalog
-from stac_sentinel import sentinel
+from stac_sentinel import SentinelSTAC
 
 testpath = op.dirname(__file__)
 
@@ -18,23 +18,20 @@ class Test(unittest.TestCase):
             dat = json.loads(f.read())
         return dat
 
-    def test_records(self):
-        for r in sentinel.latest_inventory():
-            assert('datetime' in r)
-            assert('path' in r)
+    def test_init_class(self):
+        scene = SentinelSTAC('sentinel-s2-l1c', self.read_test_metadata())
+        assert(scene.stac_version == '0.9.0')
+        assert(scene.metadata['gridSquare'] == 'VB')
+
+    def _test_get_aws_archive(self):
+        for item in SentinelSTAC.get_aws_archive('sentinel-s2-l2a'):
+            assert('properties' in item)
+            assert('stac_version' in item)
             break
 
     def test_transform(self):
-        md = self.read_test_metadata()
-        item = sentinel.transform(md)
-        assert(str(item.date) == '2017-10-23')
-        assert(item.data['type'] == 'Feature')
-        assert(len(item.data['assets']) == 17)
-        assert(item['sentinel:sequence'] == "0")
-
-    def test_get_metadata(self):
-        """ Read Sentinel metadata """
-        dat = self.read_test_metadata()
-        url = 'https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/57/U/VB/2017/10/23/0/tileInfo.json'
-        md = sentinel.read_remote(url)
-        assert(md == dat)
+        item = SentinelSTAC('sentinel-s2-l1c', self.read_test_metadata()).to_stac()
+        assert(item['stac_version'] == '0.9.0')
+        assert(item['type'] == 'Feature')
+        assert(len(item['assets']) == 17)
+        assert(item['properties']['sentinel:sequence'] == "0")

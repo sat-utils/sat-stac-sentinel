@@ -1,12 +1,12 @@
 import json
 import logging
 import requests
+import os.path as op
 
 from boto3utils import s3
 from boto3utils.s3 import get_presigned_url
-import os.path as op
-
 from dateutil.parser import parse
+from os import getcwd
 from pyproj import Proj, transform as reproj
 from shapely import geometry
 from xmljson import badgerfish as bf
@@ -18,13 +18,16 @@ logger = logging.getLogger(__name__)
 
 class SentinelSTAC(object):
 
-    region = 'eu-central-1'
     stac_version = '0.9.0'
+
+    # AWS specific fields
+    # files to look for on AWS for each collection
     collections = {
         'sentinel-s1-l1c': 'productInfo.json',
         'sentinel-s2-l1c': 'tileInfo.json',
         'sentinel-s2-l2a': 'tileInfo.json'
     }
+    region = 'eu-central-1'
     FREE_URL = 'https://roda.sentinel-hub.com'
 
     def __init__(self, collection, metadata):
@@ -140,11 +143,9 @@ class SentinelSTAC(object):
 
             except Exception as err:
                 logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
-                import pdb; pdb.set_trace()
                 continue
-            import pdb; pdb.set_trace()
 
-    def to_stac_from_s1l1c(self, base_url='./'):
+    def to_stac_from_s1l1c(self, base_url=getcwd()):
         """ Transform Sentinel-1 L1c metadata (from annotation XML) into a STAC item """
         logger.debug('Metadata filename: %s' % self.metadata['filenames'][0])
         extended_metadata = self.get_xml_metadata(self.metadata['filenames'][0])
@@ -298,4 +299,4 @@ class SentinelSTAC(object):
             'assets': assets,
             'links': [self.get_collection_link()]
         }
-        return item          
+        return item
