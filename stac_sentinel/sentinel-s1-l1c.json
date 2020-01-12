@@ -133,7 +133,7 @@
         },
         {
             "rel": "about",
-            "href": "https://sentinel.esa.int/web/sentinel/missions/sentinel-1"
+            "href": "https://github.com/sat-utils/sat-stac-sentinel"
         }
     ]
 }
