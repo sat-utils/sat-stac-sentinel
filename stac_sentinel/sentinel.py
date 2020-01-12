@@ -125,8 +125,14 @@ class SentinelSTAC(object):
             try:
                 # get initial JSON file file
                 r = requests.get(url, stream=True)
-                metadata = json.loads(r.text)
-                base_url = 's3://%s/%s' % (record['Bucket'], op.dirname(record['Key']))                        
+                base_url = 's3://%s/%s' % (record['Bucket'], op.dirname(record['Key']))  
+                md = json.loads(r.text)
+                fnames = [f"{base_url}/{a}" for a in md['filenameMap'] if 'annotation' in a and 'calibration' not in a]
+                metadata = {
+                    'id': md['id'],
+                    'coordinates': md['footprint']['coordinates'],
+                    'filenames': fnames
+                }                       
                 # transform to STAC Item
                 sentinel_scene = cls(collection, metadata)
                 item = sentinel_scene.to_stac(base_url=base_url)
@@ -134,17 +140,14 @@ class SentinelSTAC(object):
 
             except Exception as err:
                 logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
+                import pdb; pdb.set_trace()
                 continue
+            import pdb; pdb.set_trace()
 
     def to_stac_from_s1l1c(self, base_url='./'):
         """ Transform Sentinel-1 L1c metadata (from annotation XML) into a STAC item """
-
-        # get metadata filenames
-        filenames = list(self.metadata['filenameMap'].values())
-        meta_urls = ['%s/%s' % (base_url, a) for a in filenames if 'annotation' in a and 'calibration' not in a]
-
-        logger.info('meta url: %s' % meta_urls[0])
-        extended_metadata = self.get_xml_metadata(meta_urls[0])
+        logger.info('Metadata filename: %s' % self.metadata['filenames'][0])
+        extended_metadata = self.get_xml_metadata(self.metadata['filenames'][0])
 
         logger.debug('Extended metadata: %s' % json.dumps(extended_metadata))
 
@@ -173,9 +176,8 @@ class SentinelSTAC(object):
 
         # populate Asset URLs
         assets['thumbnail']['href'] = base_url + '/preview/quick-look.png'
-        assets['metadata']['href'] = base_url + '/productInfo.json'
-        filenames = [a for a in self.metadata['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
-        for f in filenames:
+        #assets['metadata']['href'] = base_url + '/productInfo.json'
+        for f in self.metadata['filenames']:
             # if this is AWS public dataset, filenames are named as mode-pol
             pol = op.splitext(f)[0].split('-')[-1].upper()
             # if not a public dataset, then filenames are the item ids
@@ -200,7 +202,8 @@ class SentinelSTAC(object):
         }
 
         # add bbox and geometry
-        item.update(self.coordinates_to_geometry(self.metadata['footprint']['coordinates'][0]))
+        #item.update(self.coordinates_to_geometry(self.metadata['footprint']['coordinates'][0]))
+        item.update(self.coordinates_to_geometry(self.metadata['coordinates'][0]))
 
         return item
 
