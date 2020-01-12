@@ -176,8 +176,11 @@ class SentinelSTAC(object):
         assets = self.get_collection()['assets']
 
         # populate Asset URLs
-        assets['thumbnail']['href'] = base_url + '/preview/quick-look.png'
-        #assets['metadata']['href'] = base_url + '/productInfo.json'
+        inpath = op.dirname(self.metadata['filenames'][0])
+        assets['thumbnail']['href'] = f"{base_url}/{inpath}/preview/quick-look.png"
+        if 'path' in self.metadata:
+            # this means input metadata was from productInfo, so link to that
+            assets['metadata']['href'] = base_url + '/productInfo.json'
         for f in self.metadata['filenames']:
             # if this is AWS public dataset, filenames are named as mode-pol
             pol = op.splitext(f)[0].split('-')[-1].upper()
@@ -189,6 +192,7 @@ class SentinelSTAC(object):
             assets['%s' % pol]['href'] = base_url + '/' + fname
             assets['%s-metadata' % pol]['href'] = base_url + '/' + f
 
+        # drop any assets for which there is no url
         assets = {k: assets[k] for k in assets if 'href' in assets[k]}
 
         item = {
