@@ -127,7 +127,7 @@ class SentinelSTAC(object):
                 r = requests.get(url, stream=True)
                 base_url = 's3://%s/%s' % (record['Bucket'], op.dirname(record['Key']))  
                 md = json.loads(r.text)
-                fnames = [f"{base_url}/{a}" for a in md['filenameMap'] if 'annotation' in a and 'calibration' not in a]
+                fnames = [f"{base_url}/{a}" for a in md['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
                 metadata = {
                     'id': md['id'],
                     'coordinates': md['footprint']['coordinates'],
@@ -146,7 +146,7 @@ class SentinelSTAC(object):
 
     def to_stac_from_s1l1c(self, base_url='./'):
         """ Transform Sentinel-1 L1c metadata (from annotation XML) into a STAC item """
-        logger.info('Metadata filename: %s' % self.metadata['filenames'][0])
+        logger.debug('Metadata filename: %s' % self.metadata['filenames'][0])
         extended_metadata = self.get_xml_metadata(self.metadata['filenames'][0])
 
         logger.debug('Extended metadata: %s' % json.dumps(extended_metadata))
