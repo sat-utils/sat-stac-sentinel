@@ -3,7 +3,7 @@ import unittest
 
 from datetime import datetime as dt
 
-from satstac.sentinel.cli import parse_args
+from stac_sentinel.cli import parse_args
 
 testpath = os.path.dirname(__file__)
 
@@ -11,11 +11,9 @@ testpath = os.path.dirname(__file__)
 class Test(unittest.TestCase):
 
     def test_parse_no_args(self):
-        with self.assertRaises(SystemExit):
-            parse_args([''])
-        with self.assertRaises(SystemExit):
-            parse_args(['-h'])
+        args = parse_args([''])
+        assert(len(args)==7)
 
     def test_parse_args(self):
-        args = parse_args('ingest catalog.json'.split(' '))
-        assert(args['catalog'] == 'catalog.json')
+        args = parse_args('sentinel-s1-l1c'.split(' '))
+        assert(args['collection'] == 'sentinel-s1-l1c')

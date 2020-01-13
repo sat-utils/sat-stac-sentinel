@@ -167,6 +167,18 @@
             "roles": ["overview"],
             "eo:bands": [3, 2, 1]
         },
+        "overview_20m": {
+            "title": "True color image",
+            "type": "image/jp2",
+            "roles": ["overview"],
+            "eo:bands": [3, 2, 1]
+        },
+        "overview_60m": {
+            "title": "True color image",
+            "type": "image/jp2",
+            "roles": ["overview"],
+            "eo:bands": [3, 2, 1]
+        },
         "B01": {
             "title": "Band 1 (coastal)",
             "type": "image/jp2",
@@ -253,7 +265,7 @@
         },
         {
             "rel": "about",
-            "href": "https://sentinel.esa.int/web/sentinel/missions/sentinel-2"
+            "href": "https://github.com/sat-utils/sat-stac-sentinel"
         }
     ]
 }

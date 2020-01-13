@@ -5,30 +5,68 @@ This repository is used for the creating [STAC Items](https://github.com/radiant
 The library includes:
 
 - STAC Collection metadata for [Sentinel-1 L1C](stac_sentinel/sentinel-s1-l1c.json), [Sentinel-2 L1C](stac_sentinel/sentinel-s2-l1c.json), and [Sentinel-2 L2A](stac_sentinel/sentinel-s2-l2a.json)
-- Function for transforming the original metadata of a scene (productInfo.json for Sentinel-1, tileInfo.json for Sentinel-2) into a STAC Item
+- Function for transforming the original metadata of a scene (productInfo.json for Sentinel-1, tileInfo.json for Sentinel-2) into a STAC Item. See [sample Items](samples/).
 - A Python generator function to loop through the entire archive of [Sentinel-1 on AWS](https://registry.opendata.aws/sentinel-1/) and [Sentinel-2 on AWS](https://registry.opendata.aws/sentinel-2/) for any of the Collections
 - A Command Line Interface (CLI) for fetching STAC Item metadata for the archives on AWS
 - A Lambda function that listens for new scenes on AWS and publishes the complete STAC Item to an SNS topic
 
 
+## Table of Contents
+
+- [SNS Topics](#sns-topics)
+- [Public Catalogs](#public-catalogs)
+- [Installation](#installation)
+- [Usage](#usage)
+- [STAC Conversion Notes](#stac-conversion-notes)
+- [Development](#development)
+- [About](#about)
+
+
 ## SNS Topics
 
-There is a publicly deployed version of the stac-sentinel Lambda function along with a publicly available SNS topic. Anyone can subscribe to the SNS topic from resources in their AWS account in order to get metadata for the latest Sentinel scenes.
+There is a publicly deployed version of the stac-sentinel Lambda function along with a publicly available SNS topic. Anyone can subscribe to the SNS topic from resources in their AWS account (use the ARNs provided below) in order to get metadata for the latest Sentinel scenes. The SNS message is JSON that contains the STAC Item at:
 
-### Sentinel-1 L1C
+```
+stac_item = message['Records'][0]['Sns']['Message']
+```
+
+The published message also uses [SNS Message attributes](https://docs.aws.amazon.com/sns/latest/dg/sns-message-attributes.html) that can be used to filter SNS messages using [SNS Message Filter](https://docs.aws.amazon.com/sns/latest/dg/sns-message-filtering.html). The published STAC SNS messages can be filtered using these attributes:
+
+- `properties.datetime`
+- `bbox.ll_lon`
+- `bbox.ur_lon`
+- `bbox.ll_lat`
+- `bbox.ur_lat`
+
+For example, an SNS filter policy that only notifies the subscriber when an Item is over Rio de Janeiro (22.9068° S, 43.1729° W) looks like this keeping-a-spatiotemporal-asset-catalog-stac-up-to-date-with-sns-sqs/)):
+
+```json
+{
+	"bbox.ll_lon": [{"numeric":["<=",-43.1729]}],
+	"bbox.ur_lon": [{"numeric":[">=",-43.1729]}],
+	"bbox.ll_lat": [{"numeric":["<=",-22.9068]}],
+	"bbox.ur_lat": [{"numeric":[">=",-22.9068]}]
+}
+```
+
+Thanks to Frederico Liporace for his article [Keeping a SpatioTemporal Asset Catalog (STAC) Up To Date with SNS/SQS](https://aws.amazon.com/blogs/publicsector/).
+
+### SNS ARNs
+
+#### Sentinel-1 L1C
 
 | STAC Version | SNS ARN  |
 | -------- | ----  |
 | 0.9.0    | arn:aws:sns:eu-central-1:608149789419:stac-0-9-0_sentinel-s1-l1c |
 
-### Sentinel-2 L1C
+#### Sentinel-2 L1C
 
 | STAC Version | SNS ARN  |
 | -------- | ----  |
 | 0.6.0    | arn:aws:sns:eu-central-1:552188055668:sentinel-stac |
 | 0.9.0    | arn:aws:sns:eu-central-1:608149789419:stac-0-9-0_sentinel-s2-l1c |
 
-### Sentinel-2 L2A
+#### Sentinel-2 L2A
 
 | STAC Version | SNS ARN  |
 | -------- | ----  |
@@ -44,7 +82,11 @@ This section will be updated with newer catalogs as they become available.
 
 ## Installation
 
-If you are interested in using the library to create STAC Items from the historical archive rather than an existing catalog or new scene notifications, you will need to install this library from GitHub. To install the latest released version (from the `master` branch):
+If you are interested in using the library to create STAC Items from the historical archive rather than an existing catalog or new scene notifications, you will need to install this library from GitHub.
+
+Because stac-sentinel uses PyProj, the [PROJ system libraries](https://proj.org/) will be needed as well and needs to be installed as per your system. You could also consider using the [GeoLambda](https://github.com/developmentseed/geolambda) base Docker image, which includes PROJ.
+
+Then, to install the latest released version (from the `master` branch).
 
 ```
 $ pip install git+https://github.com/sat-utils/sat-stac-sentinel
@@ -173,7 +215,7 @@ Note however that in this example, the base_url of s3://sentinel-s2-l1c, is a re
 However, for Sentinel-1, there is an additional metadata file that is needed that is only available in the bucket. **If you have credentials defined when running this code, it will automatically use requester-pays and you will be charged!** 
 
 
-## Notes on STAC transofmration
+## STAC conversion notes
 
 ### Sentinel-1
 
@@ -185,6 +227,7 @@ The data that is ingested by the sat-stac-sentinel CLI starts with bucket invent
 
 In either case the tileInfo.json contains all of the data needed to create a STAC Item, however the given geometry is in native coordinates rather than lat/lon. The library reprojects the geometry using EPSG:4326. Additionally, the convex hull is calculated for the geometry. In most cases this doesn't make a difference, however some of the tile geometries can be long and complex. Taking the convex hull is a way to simplify the geometry without impacting search and discovery.
 
+
 ## Development
 
 The `master` branch is the latest versioned release, while the `develop` branch is the latest development version. When making a new release:
@@ -194,8 +237,11 @@ The `master` branch is the latest versioned release, while the `develop` branch 
 - Create PR and merge to master
 - Create a release on GitHub from `master` with the new version
 
-On a release (merge to `master`) CircleCI will package the Lambda code and deploy it to the production Lambda function that listens (via SNS) for new Sentinel scenes.
+Currently, the Lambda function needs to be deployed manually. It is `stac-sentinel-v0` located in `eu-central-1`.
 
+```
+$ aws lambda update-function-code --function-name stac-sentinel-v0 --region eu-central-1 --zip-file fileb://lambda-deploy.zip
+```
 
 ## About
-[stac_sentinel](https://github.com/sat-utils/stac-sentinel) is part of a collection of tools called [sat-utils](https://github.com/sat-utils).
+[stac_sentinel](https://github.com/sat-utils/stac-sentinel) leverages the use of [Spatio-Temporal Asset Catalogs](https://github.com/radiantearth/stac-spec)
