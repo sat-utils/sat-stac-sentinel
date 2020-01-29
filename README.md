@@ -240,6 +240,9 @@ The `master` branch is the latest versioned release, while the `develop` branch 
 Currently, the Lambda function needs to be deployed manually. It is `stac-sentinel-v0` located in `eu-central-1`.
 
 ```
+$ pip install -r requirements-lambda.txt -t lambda/
+$ pip install . -t lambda/ --no-deps
+$ cd lambda; zip -ru ../lambda-deploy.zip .; cd ..
 $ aws lambda update-function-code --function-name stac-sentinel-v0 --region eu-central-1 --zip-file fileb://lambda-deploy.zip
 ```
 
