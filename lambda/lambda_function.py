@@ -60,8 +60,15 @@ def lambda_handler(event, context):
 
     items = []
     if 'sentinel-s1' in collection:
-        scene = SentinelSTAC(collection, metadata)
-        item = scene.to_stac(base_url='s3://%s/%s' % (collection, metadata['path']))
+        base_url = 's3://%s/%s' % (collection, metadata['path'])
+        fnames = [f"{base_url}/{a}" for a in metadata['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
+        md = {
+            'id': metadata['id'],
+            'coordinates': metadata['footprint']['coordinates'],
+            'filenames': fnames
+        }
+        scene = SentinelSTAC(collection, md)
+        item = scene.to_stac()
         items.append(item)
     else:
         # there should never be more than one tile
