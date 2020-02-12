@@ -54,7 +54,7 @@ class SentinelSTAC(object):
     def get_collection_link(self):
         """ Return a STAC link to STAC Collection JSON from GitHub repo """
         repo_url = 'https://raw.githubusercontent.com/sat-utils/sat-stac-sentinel'
-        collection_url = repo_url + '/%s/stac_sentinel/%s.json' % (__version__), self.collection)
+        collection_url = repo_url + '/%s/stac_sentinel/%s.json' % (__version__, self.collection)
         return {
             'rel': 'collection',
             'type': 'application/json',
