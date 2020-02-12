@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.2.1] - 2020-02-12
+
+### Changed
+- Updated metadata fields for STAC 0.9.0-rc2
+
 ## [v0.2.0] - 2020-01-12
 
 ### Added
@@ -29,5 +34,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Initial Release
 
 [Unreleased]: https://github.com/sat-utils/sat-stac-sentinel/compare/0.1.0...HEAD
+[v0.2.1]: https://github.com/sat-utils/sat-stac-sentinel/compare/0.2.0...0.2.1
 [v0.2.0]: https://github.com/sat-utils/sat-stac-sentinel/compare/0.1.0...0.2.0
 [v0.1.0]: https://github.com/sat-utils/sat-stac-sentinel/tree/0.1.0
