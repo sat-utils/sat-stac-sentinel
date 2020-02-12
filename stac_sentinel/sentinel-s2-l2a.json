@@ -51,7 +51,7 @@
     "properties": {
         "constellation": "sentinel-2",
         "instruments": ["msi"],
-        "eo:gsd": 10,
+        "gsd": 10,
         "eo:bands": [
             {
                 "name": "B01",
@@ -140,7 +140,7 @@
                 "full_width_half_max": 0.242
             }
         ],
-        "sat:off_nadir_angle": 0
+        "view:off_nadir": 0
     },
     "summaries": {
         "platform": ["sentinel-2a", "sentinel-2b"]

@@ -122,20 +122,22 @@ class SentinelSTAC(object):
         inventory = s3().latest_inventory(inventory_url, **kwargs, suffix=cls.collections[collection])
 
         # iterate through latest inventory
-        for record in inventory:
+        for i, record in enumerate(inventory):
             url = '%s/%s/%s' % (cls.FREE_URL, collection, record['Key'])
             logger.debug('Fetching initial metadata: %s' % url)
             try:
                 # get initial JSON file file
                 r = requests.get(url, stream=True)
                 base_url = 's3://%s/%s' % (record['Bucket'], op.dirname(record['Key']))  
-                md = json.loads(r.text)
+                metadata = json.loads(r.text)
+                '''
                 fnames = [f"{base_url}/{a}" for a in md['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
                 metadata = {
                     'id': md['id'],
                     'coordinates': md['footprint']['coordinates'],
                     'filenames': fnames
-                }                       
+                }
+                '''                  
                 # transform to STAC Item
                 sentinel_scene = cls(collection, metadata)
                 item = sentinel_scene.to_stac(base_url=base_url)
@@ -168,7 +170,7 @@ class SentinelSTAC(object):
             'sar:looks_range': swathProcParams['rangeProcessing']['numberOfLooks']['$'],
             'sar:looks_azimuth': swathProcParams['azimuthProcessing']['numberOfLooks']['$'],
             'sat:orbit_state': extended_metadata['product']['generalAnnotation']['productInformation']['pass']['$'].lower(),
-            'sat:incidence_angle': imageInfo['incidenceAngleMidSwath']['$'],
+            'view:incidence_angle': imageInfo['incidenceAngleMidSwath']['$'],
             'sat:relative_orbit': int(adsHeader['absoluteOrbitNumber']['$']/175.0)
         }
 
