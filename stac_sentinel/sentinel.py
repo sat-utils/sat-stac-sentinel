@@ -122,7 +122,7 @@ class SentinelSTAC(object):
         inventory = s3().latest_inventory(inventory_url, **kwargs, suffix=cls.collections[collection])
 
         # iterate through latest inventory
-        for record in inventory:
+        for i, record in enumerate(inventory):
             url = '%s/%s/%s' % (cls.FREE_URL, collection, record['Key'])
             logger.debug('Fetching initial metadata: %s' % url)
             try:

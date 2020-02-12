@@ -46,7 +46,9 @@ def parse_args(args):
 
 def cli():
     args = parse_args(sys.argv[1:])
-    logging.basicConfig(stream=sys.stdout, level=args.pop('log') * 10) 
+    logging.basicConfig(stream=sys.stdout,
+                        level=args.pop('log') * 10,
+                        datefmt='%Y-%m-%d %H:%M:%S')
 
     publish = args.pop('publish', None)
 
@@ -65,8 +67,8 @@ def cli():
         if publish:
             client = boto3.client('sns', region_name=publish.split(':')[3])
             client.publish(TopicArn=publish, Message=dumps(item))
-        if i > 5:
-            break
+        #if i > 5:
+        #    break
 
 
 if __name__ == "__main__":
