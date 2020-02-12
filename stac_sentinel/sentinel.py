@@ -106,7 +106,7 @@ class SentinelSTAC(object):
         return cls.coordinates_to_geometry(coordinates)
 
     @classmethod
-    def get_aws_archive(cls, collection, **kwargs):
+    def get_aws_archive(cls, collection, direct_from_s3=False, **kwargs):
         """ Generator function returning the archive of Sentinel data on AWS
         Keyword arguments:
         prefix -- Process only files keys begining with this prefix
@@ -127,16 +127,18 @@ class SentinelSTAC(object):
             if (i % 100) == 0:
                 logger.info('%s records' % i)
 
-            parts = s3().urlparse(url)
-
             #url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])
             logger.debug('Fetching initial metadata: %s' % url)
             try:
-                # use free endpoint to access file
-                # url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])                
-                #r = requests.get(url, stream=True)
-                #metadata = json.loads(r.text)
-                metadata = s3().read_json(url, requester_pays=True)
+                if direct_from_s3:
+                    metadata = s3().read_json(url, requester_pays=True)
+                else:
+                    # use free endpoint to access file
+                    parts = s3().urlparse(url)
+                    _url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])                
+                    r = requests.get(_url, stream=True)
+                    metadata = json.loads(r.text)
+               
                 '''
                 fnames = [f"{base_url}/{a}" for a in md['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
                 metadata = {
