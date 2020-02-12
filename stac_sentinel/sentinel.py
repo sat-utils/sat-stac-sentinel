@@ -126,16 +126,16 @@ class SentinelSTAC(object):
         for i, url in enumerate(inventory):
             if (i % 100) == 0:
                 logger.info('%s records' % i)
-
-            #url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])
-            logger.debug('Fetching initial metadata: %s' % url)
+            
             try:
                 if direct_from_s3:
+                    logger.debug('Fetching initial metadata: %s' % url)
                     metadata = s3().read_json(url, requester_pays=True)
                 else:
                     # use free endpoint to access file
                     parts = s3().urlparse(url)
                     _url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])                
+                    logger.debug('Fetching initial metadata: %s' % _url)
                     r = requests.get(_url, stream=True)
                     metadata = json.loads(r.text)
                

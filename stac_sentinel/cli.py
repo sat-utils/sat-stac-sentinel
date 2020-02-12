@@ -29,6 +29,7 @@ def parse_args(args):
     parser.add_argument('--prefix', help='Only ingest scenes with a path starting with prefix', default=None)
     parser.add_argument('--start_date', help='Only ingest scenes with a Last Modified Date past provided start date', default=None)
     parser.add_argument('--end_date', help='Only ingest scenes with a Last Modified Date before provided end date', default=None)
+    parser.add_argument('--direct_from_s3', help='Get metadata direct from s3 instead of free endpoint', default=False, action='store_true')
 
     # output control
     parser.add_argument('--save', help='Save fetch Items as <id>.json files to this folder', default=None)
