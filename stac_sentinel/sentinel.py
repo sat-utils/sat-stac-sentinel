@@ -129,12 +129,14 @@ class SentinelSTAC(object):
 
             parts = s3().urlparse(url)
 
-            url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])
+            #url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])
             logger.debug('Fetching initial metadata: %s' % url)
             try:
-                # get initial JSON file file
-                r = requests.get(url, stream=True)
-                metadata = json.loads(r.text)
+                # use free endpoint to access file
+                # url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])                
+                #r = requests.get(url, stream=True)
+                #metadata = json.loads(r.text)
+                metadata = s3().read_json(url, requester_pays=True)
                 '''
                 fnames = [f"{base_url}/{a}" for a in md['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
                 metadata = {
@@ -149,7 +151,7 @@ class SentinelSTAC(object):
                 yield item
 
             except Exception as err:
-                logger.error('Error creating STAC Item: %s, Error: %s' % (json.dumps(record), err))
+                logger.error('Error creating STAC Item from %s, Error: %s' % (url, err))
                 continue
 
     def to_stac_from_s1l1c(self, **kwargs):
