@@ -57,7 +57,8 @@ def cli():
     if savepath is not None:
         makedirs(savepath, exist_ok=True)
     for i, item in enumerate(SentinelSTAC.get_aws_archive(collection_id, **args)):
-        print(item['properties']['datetime'], item['id'])
+        if (i % 10000) == 0:
+            logger.info('%s records' % i)
         # save items as JSON files
         if savepath:
             fname = op.join(savepath, '%s.json' % item['id'])
