@@ -48,7 +48,7 @@ def cli():
     args = parse_args(sys.argv[1:])
     logging.basicConfig(stream=sys.stdout,
                         level=args.pop('log') * 10,
-                        datefmt='%Y-%m-%d %H:%M:%S')
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     publish = args.pop('publish', None)
 
@@ -56,9 +56,7 @@ def cli():
     savepath = args.pop('save')
     if savepath is not None:
         makedirs(savepath, exist_ok=True)
-    for i, item in enumerate(SentinelSTAC.get_aws_archive(collection_id, **args)):
-        if (i % 10000) == 0:
-            logger.info('%s records' % i)
+    for item in SentinelSTAC.get_aws_archive(collection_id, **args):
         # save items as JSON files
         if savepath:
             fname = op.join(savepath, '%s.json' % item['id'])
