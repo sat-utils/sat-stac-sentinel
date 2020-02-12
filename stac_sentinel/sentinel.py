@@ -123,6 +123,8 @@ class SentinelSTAC(object):
 
         # iterate through latest inventory
         for i, record in enumerate(inventory):
+            if (i % 10000) == 0:
+                logger.info('%s records' % i)
             url = '%s/%s/%s' % (cls.FREE_URL, collection, record['Key'])
             logger.debug('Fetching initial metadata: %s' % url)
             try:
@@ -144,7 +146,7 @@ class SentinelSTAC(object):
                 yield item
 
             except Exception as err:
-                logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
+                logger.error('Error creating STAC Item: %s, Error: %s' % (json.dumps(record), err))
                 continue
 
     def to_stac_from_s1l1c(self, **kwargs):
