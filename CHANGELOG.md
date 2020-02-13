@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Updated metadata fields for STAC 0.9.0-rc2
+- Update boto3-utils to 0.2.0
 
 ### Fixed
 - Point to correct github tag when linking to STAC collection metadata
