@@ -11,6 +11,7 @@ from pyproj import Proj, transform as reproj
 from shapely import geometry
 from xmljson import badgerfish as bf
 from xml.etree.ElementTree import fromstring
+from urllib.parse import urlparse
 from .version import __version__
 
 logger = logging.getLogger(__name__)
@@ -106,6 +107,16 @@ class SentinelSTAC(object):
         return cls.coordinates_to_geometry(coordinates)
 
     @classmethod
+    def latest_inventory(cls, collection, **kwargs):
+        """ Get the latest inventory of metadata fields """
+        inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection, collection)
+        inventory = s3().latest_inventory(inventory_url, **kwargs, suffix=cls.collections[collection])
+        for url in inventory:
+            parts = s3().urlparse(url)
+            # use free endpoint
+            yield '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])
+
+    @classmethod
     def get_aws_archive(cls, collection, direct_from_s3=False, **kwargs):
         """ Generator function returning the archive of Sentinel data on AWS
         Keyword arguments:
@@ -117,27 +128,16 @@ class SentinelSTAC(object):
         Iterator of STAC Items using specified Transform object
         """
 
-        # get latest AWS inventory for this collection
-        inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection, collection)
-        inventory = s3().latest_inventory(inventory_url, **kwargs, suffix=cls.collections[collection])
-        #import pdb; pdb.set_trace()
         # iterate through latest inventory
         from datetime import datetime
-        for i, url in enumerate(inventory):
+        for i, url in enumerate(cls.latest_inventory(collection, **kwargs)):
             if (i % 100) == 0:
                 logger.info('%s records' % i)
             
-            try:
-                if direct_from_s3:
-                    logger.debug('Fetching initial metadata: %s' % url)
-                    metadata = s3().read_json(url, requester_pays=True)
-                else:
-                    # use free endpoint to access file
-                    parts = s3().urlparse(url)
-                    _url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])                
-                    logger.debug('Fetching initial metadata: %s' % _url)
-                    r = requests.get(_url, stream=True)
-                    metadata = json.loads(r.text)
+            try:              
+                logger.debug('Fetching initial metadata: %s' % url)
+                r = requests.get(url, stream=True)
+                metadata = json.loads(r.text)
                
                 '''
                 fnames = [f"{base_url}/{a}" for a in md['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
@@ -149,7 +149,11 @@ class SentinelSTAC(object):
                 '''                  
                 # transform to STAC Item
                 sentinel_scene = cls(collection, metadata)
-                item = sentinel_scene.to_stac(base_url=url)
+                base_url = op.dirname(url)
+                if url[0:5] == 'https':
+                    # this is the FREE URL, get s3 base
+                    base_url = 's3:/' + urlparse(url).path
+                item = sentinel_scene.to_stac(base_url=base_url)
                 yield item
 
             except Exception as err:
