@@ -29,6 +29,7 @@ def parse_args(args):
     parser.add_argument('--prefix', help='Only ingest scenes with a path starting with prefix', default=None)
     parser.add_argument('--start_date', help='Only ingest scenes with a Last Modified Date past provided start date', default=None)
     parser.add_argument('--end_date', help='Only ingest scenes with a Last Modified Date before provided end date', default=None)
+    parser.add_argument('--direct_from_s3', help='Get metadata direct from s3 instead of free endpoint', default=False, action='store_true')
 
     # output control
     parser.add_argument('--save', help='Save fetch Items as <id>.json files to this folder', default=None)
@@ -48,7 +49,7 @@ def cli():
     args = parse_args(sys.argv[1:])
     logging.basicConfig(stream=sys.stdout,
                         level=args.pop('log') * 10,
-                        datefmt='%Y-%m-%d %H:%M:%S')
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     publish = args.pop('publish', None)
 
@@ -56,8 +57,7 @@ def cli():
     savepath = args.pop('save')
     if savepath is not None:
         makedirs(savepath, exist_ok=True)
-    for i, item in enumerate(SentinelSTAC.get_aws_archive(collection_id, **args)):
-        print(item['properties']['datetime'], item['id'])
+    for item in SentinelSTAC.get_aws_archive(collection_id, **args):
         # save items as JSON files
         if savepath:
             fname = op.join(savepath, '%s.json' % item['id'])

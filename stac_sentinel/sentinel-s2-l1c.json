@@ -51,7 +51,7 @@
     "properties": {
         "constellation": "sentinel-2",
         "instruments": ["msi"],
-        "gsd": 10,
+        "eo:gsd": 10,
         "eo:bands": [
             {
                 "name": "B01",

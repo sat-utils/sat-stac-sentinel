@@ -106,7 +106,7 @@ class SentinelSTAC(object):
         return cls.coordinates_to_geometry(coordinates)
 
     @classmethod
-    def get_aws_archive(cls, collection, **kwargs):
+    def get_aws_archive(cls, collection, direct_from_s3=False, **kwargs):
         """ Generator function returning the archive of Sentinel data on AWS
         Keyword arguments:
         prefix -- Process only files keys begining with this prefix
@@ -120,16 +120,25 @@ class SentinelSTAC(object):
         # get latest AWS inventory for this collection
         inventory_url = 's3://sentinel-inventory/%s/%s-inventory' % (collection, collection)
         inventory = s3().latest_inventory(inventory_url, **kwargs, suffix=cls.collections[collection])
-
+        #import pdb; pdb.set_trace()
         # iterate through latest inventory
-        for i, record in enumerate(inventory):
-            url = '%s/%s/%s' % (cls.FREE_URL, collection, record['Key'])
-            logger.debug('Fetching initial metadata: %s' % url)
+        from datetime import datetime
+        for i, url in enumerate(inventory):
+            if (i % 100) == 0:
+                logger.info('%s records' % i)
+            
             try:
-                # get initial JSON file file
-                r = requests.get(url, stream=True)
-                base_url = 's3://%s/%s' % (record['Bucket'], op.dirname(record['Key']))  
-                metadata = json.loads(r.text)
+                if direct_from_s3:
+                    logger.debug('Fetching initial metadata: %s' % url)
+                    metadata = s3().read_json(url, requester_pays=True)
+                else:
+                    # use free endpoint to access file
+                    parts = s3().urlparse(url)
+                    _url = '%s/%s/%s' % (cls.FREE_URL, collection, parts['key'])                
+                    logger.debug('Fetching initial metadata: %s' % _url)
+                    r = requests.get(_url, stream=True)
+                    metadata = json.loads(r.text)
+               
                 '''
                 fnames = [f"{base_url}/{a}" for a in md['filenameMap'].values() if 'annotation' in a and 'calibration' not in a]
                 metadata = {
@@ -140,11 +149,11 @@ class SentinelSTAC(object):
                 '''                  
                 # transform to STAC Item
                 sentinel_scene = cls(collection, metadata)
-                item = sentinel_scene.to_stac(base_url=base_url)
+                item = sentinel_scene.to_stac(base_url=url)
                 yield item
 
             except Exception as err:
-                logger.error('Error creating STAC Item %s: %s' % (record['url'], err))
+                logger.error('Error creating STAC Item from %s, Error: %s' % (url, err))
                 continue
 
     def to_stac_from_s1l1c(self, **kwargs):
