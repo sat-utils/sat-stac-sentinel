@@ -316,7 +316,7 @@ class SentinelSTAC(object):
         item = {
             'type': 'Feature',
             'stac_version': self.stac_version,
-            'stac_extensions': ['sat', 'eo', 'view'],
+            'stac_extensions': ['sat', 'eo', 'view', 'proj'],
             'id': id,
             'collection': self.collection,
             'bbox': bbox,
