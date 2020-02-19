@@ -247,7 +247,7 @@ class SentinelSTAC(object):
             'datetime': dt.isoformat(),
             'platform': 'sentinel-2%s' % self.metadata['productName'][2].lower(),
             'eo:cloud_cover': float(self.metadata['cloudyPixelPercentage']),
-            'proj:epsg': epsg,
+            'proj:epsg': int(epsg),
             'proj:geometry': {
                 'type': 'Polygon',
                 'coordinates': native_coordinates
