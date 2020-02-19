@@ -241,6 +241,7 @@ class SentinelSTAC(object):
         bbox = [min(lons), min(lats), max(lons), max(lats)]
         coordinates = [[[lons[i], lats[i]] for i in range(0, len(lons))]]
         geom = geometry.mapping(geometry.Polygon(coordinates[0]).convex_hull)
+        native_geom = geometry.mapping(geometry.Polygon(native_coordinates[0]).convex_hull)
 
         # Item properties
         props = {
@@ -248,10 +249,7 @@ class SentinelSTAC(object):
             'platform': 'sentinel-2%s' % self.metadata['productName'][2].lower(),
             'eo:cloud_cover': float(self.metadata['cloudyPixelPercentage']),
             'proj:epsg': int(epsg),
-            'proj:geometry': {
-                'type': 'Polygon',
-                'coordinates': native_coordinates
-            },
+            'proj:geometry': native_geom,
             'sentinel:latitude_band': self.metadata['latitudeBand'],
             'sentinel:grid_square': self.metadata['gridSquare'],
             'sentinel:sequence': self.metadata['path'].split('/')[-1],
