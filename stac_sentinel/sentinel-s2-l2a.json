@@ -1,8 +1,7 @@
 {
     "stac_version": "0.9.0",
     "stac_extensions": [
-        "instrument",
-        "sat",
+        "view",
         "eo"
     ],
     "id": "sentinel-s2-l2a",
