@@ -252,7 +252,6 @@ class SentinelSTAC(object):
                 'type': 'Polygon',
                 'coordinates': native_coordinates
             },
-            'sentinel:utm_zone': self.metadata['utmZone'],
             'sentinel:latitude_band': self.metadata['latitudeBand'],
             'sentinel:grid_square': self.metadata['gridSquare'],
             'sentinel:sequence': self.metadata['path'].split('/')[-1],
