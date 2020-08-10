@@ -1,6 +1,6 @@
 pyproj==2.4.1
 shapely~=1.6.4.post2
-boto3-utils~=0.2.0
+boto3-utils~=0.3
 #git+git://github.com/matthewhanson/boto3-utils@develop
 xmljson~=0.2.0
 requests>=2.18.1
